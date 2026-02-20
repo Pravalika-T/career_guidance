@@ -4,7 +4,7 @@
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useUser, useDoc, useFirestore } from '@/firebase';
 import { doc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -16,18 +16,26 @@ export default function RootAdminLayout({
   const { user, loading: authLoading } = useUser();
   const db = useFirestore();
   const router = useRouter();
+  const pathname = usePathname();
   
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData, loading: docLoading } = useDoc(userDocRef);
 
+  const isLoginPage = pathname === '/admin/login';
+
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/');
+    if (!authLoading && !isLoginPage) {
+      if (!user) {
+        router.push('/admin/login');
+      } else if (!docLoading && userData && userData.role !== 'admin') {
+        router.push('/admin/login');
+      }
     }
-    if (!authLoading && !docLoading && userData && userData.role !== 'admin') {
-      router.push('/');
-    }
-  }, [user, userData, authLoading, docLoading, router]);
+  }, [user, userData, authLoading, docLoading, router, isLoginPage]);
+
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   if (authLoading || docLoading) {
     return (
