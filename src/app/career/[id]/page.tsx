@@ -7,12 +7,26 @@ import { CAREER_PATHS, DOMAINS } from '@/lib/career-data';
 import { PathExplorer } from '@/components/career/PathExplorer';
 import { RealityExplorer } from '@/components/career/RealityExplorer';
 import { CareerSimulator } from '@/components/career/CareerSimulator';
+import { VRExperience } from '@/components/career/VRExperience';
 import { UserStats } from '@/components/gamification/UserStats';
 import { DynamicBackground } from '@/components/visuals/DynamicBackground';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles, Info, Compass, ArrowRight, Gamepad2 } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Wallet, 
+  BrainCircuit, 
+  Target, 
+  Shield, 
+  Video, 
+  Sparkles, 
+  Info, 
+  Compass, 
+  ArrowRight, 
+  Gamepad2,
+  Rotate3d
+} from 'lucide-react';
 import Link from 'next/link';
 
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -22,6 +36,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
   const [showRealityPrompt, setShowRealityPrompt] = useState(false);
   const [isRealityOpen, setIsRealityOpen] = useState(false);
   const [isSimOpen, setIsSimOpen] = useState(false);
+  const [isVROpen, setIsVROpen] = useState(false);
   const [hasExploredReality, setHasExploredReality] = useState(false);
 
   // Find related careers in the same domain, excluding current one
@@ -137,6 +152,35 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           </motion.div>
         </div>
 
+        {/* VR Experience Trigger */}
+        <div className="mt-24 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white/40 backdrop-blur-xl p-12 rounded-[56px] border border-white/50 shadow-2xl relative overflow-hidden group"
+          >
+            <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+              <div className="w-20 h-20 rounded-[32px] bg-primary/10 text-primary flex items-center justify-center mx-auto mb-4">
+                <Rotate3d className="w-10 h-10" />
+              </div>
+              <h2 className="text-4xl font-headline font-bold">Step Into This Career (VR)</h2>
+              <p className="text-xl text-muted-foreground font-light leading-relaxed">
+                "Experience before you decide." Immerse yourself in a guided 360° tour of the {career.name} workplace.
+              </p>
+              <Button 
+                onClick={() => setIsVROpen(true)}
+                className="h-16 px-12 rounded-3xl bg-primary hover:bg-primary/90 text-white font-bold text-xl shadow-xl hover:scale-105 transition-transform"
+              >
+                Launch VR Experience
+                <Sparkles className="ml-2 w-6 h-6" />
+              </Button>
+            </div>
+            <div className="absolute -top-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-accent/5 rounded-full blur-[80px] group-hover:scale-150 transition-transform duration-1000" />
+          </motion.div>
+        </div>
+
         {/* The 3-Stage Failure-Safe Roadmap */}
         <div className="mt-32">
           <div className="text-center mb-16">
@@ -148,7 +192,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           <PathExplorer career={career} />
         </div>
 
-        {/* Immersive Experience Section */}
+        {/* Immersive Experience Section (Old Static Version) */}
         <div className="mt-40">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-6">
             <div className="flex items-center gap-5">
@@ -254,7 +298,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
 
       {/* Career Reality Prompt */}
       <AnimatePresence>
-        {showRealityPrompt && !isRealityOpen && !isSimOpen && (
+        {showRealityPrompt && !isRealityOpen && !isSimOpen && !isVROpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -297,6 +341,16 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           <CareerSimulator 
             career={career}
             onClose={() => setIsSimOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* VR Experience Modal */}
+      <AnimatePresence>
+        {isVROpen && (
+          <VRExperience 
+            career={career}
+            onClose={() => setIsVROpen(false)}
           />
         )}
       </AnimatePresence>

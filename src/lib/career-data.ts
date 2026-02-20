@@ -38,6 +38,23 @@ export interface SimulationScenario {
   options: SimulationOption[];
 }
 
+export interface VRHotspot {
+  id: string;
+  label: string;
+  info: string;
+  x: number;
+  y: number;
+}
+
+export interface VRExperienceData {
+  scenes: {
+    id: 'environment' | 'responsibilities' | 'lifestyle';
+    title: string;
+    description: string;
+    hotspots: VRHotspot[];
+  }[];
+}
+
 export interface CareerPath {
   id: string;
   name: string;
@@ -51,6 +68,7 @@ export interface CareerPath {
   alternativeExams: Exam[];
   backupCareers: BackupPath[];
   virtualExperienceUrl?: string;
+  vrExperience?: VRExperienceData;
   reality: RealityMetrics;
   simulation: SimulationScenario[];
 }
@@ -84,6 +102,33 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'tech',
     description: 'Build the software that powers the world.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    vrExperience: {
+      scenes: [
+        {
+          id: 'environment',
+          title: 'The Modern Tech Hub',
+          description: 'Explore your creative workstation and collaborative zones.',
+          hotspots: [
+            { id: '1', label: 'Workstation', info: 'Dual-monitors and ergonomic setup for long coding sprints.', x: 40, y: 50 },
+            { id: '2', label: 'Standup Area', info: 'Where daily sync-ups happen with the global team.', x: 70, y: 30 }
+          ]
+        },
+        {
+          id: 'responsibilities',
+          title: 'Core Development',
+          description: 'Experience the flow state of building scalable systems.',
+          hotspots: [
+            { id: '3', label: 'Code Review', info: 'Crucial collaborative quality checks.', x: 50, y: 40 }
+          ]
+        },
+        {
+          id: 'lifestyle',
+          title: 'Hybrid Rhythm',
+          description: 'A look at the mix of quiet focused work and energetic team bursts.',
+          hotspots: []
+        }
+      ]
+    },
     reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
     primaryExam: { 
       name: 'JEE Advanced', 
@@ -109,39 +154,6 @@ export const CAREER_PATHS: CareerPath[] = [
     simulation: []
   },
   {
-    id: 'psychologist',
-    name: 'Clinical Psychologist',
-    role: 'Diagnoses and treats mental health issues.',
-    eligibility: 'Masters/M.Phil in Clinical Psychology.',
-    skills: ['Empathy', 'Active Listening', 'Counseling'],
-    salary: '₹4L - ₹20L+',
-    domainId: 'health',
-    description: 'Understand the human mind and help people overcome mental barriers.',
-    reality: { pressure: 'moderate', balance: 'flexible', stability: 'stable' },
-    primaryExam: { 
-      name: 'TISS-NET', 
-      description: 'Entrance for premium psychology courses.', 
-      frequency: 'Annual', 
-      eligibility: 'Graduation',
-      prepGuide: {
-        subjects: [
-          { name: 'General Awareness', weightage: '40%' },
-          { name: 'English Proficiency', weightage: '30%' },
-          { name: 'Math & Logical Reasoning', weightage: '30%' }
-        ],
-        milestones: [
-          { title: 'Current Affairs', period: 'Daily', description: 'Stay updated on social and political news.' },
-          { title: 'Aptitude Training', period: 'Month 1-3', description: 'Build speed in logic and basic math.' },
-          { title: 'Domain Knowledge', period: 'Final Month', description: 'Revise fundamental psychological theories.' }
-        ],
-        resources: ['The Hindu/IE', 'Arihant GK', 'RS Aggarwal']
-      }
-    },
-    alternativeExams: [],
-    backupCareers: [{ id: 'hr', name: 'HR Specialist', matchReason: 'Focuses on human behavior in organizations.' }],
-    simulation: []
-  },
-  {
     id: 'doctor',
     name: 'General Physician',
     role: 'Provides primary medical care.',
@@ -151,6 +163,31 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'health',
     description: 'The front line of healthcare, identifying and treating illnesses.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
+    vrExperience: {
+      scenes: [
+        {
+          id: 'environment',
+          title: 'Clinical Sanctuary',
+          description: 'A space of trust and precise medical care.',
+          hotspots: [
+            { id: '1', label: 'Patient Area', info: 'Where empathy meets diagnosis.', x: 45, y: 55 },
+            { id: '2', label: 'Medical Charting', info: 'Updating records to track patient recovery.', x: 65, y: 45 }
+          ]
+        },
+        {
+          id: 'responsibilities',
+          title: 'Active Rounds',
+          description: 'Engaging with diverse health challenges throughout the day.',
+          hotspots: []
+        },
+        {
+          id: 'lifestyle',
+          title: 'Pulse of Responsibility',
+          description: 'Experience the high-impact decisions of a medical life.',
+          hotspots: []
+        }
+      ]
+    },
     reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
     primaryExam: { 
       name: 'NEET UG', 
@@ -185,6 +222,31 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'aviation',
     description: 'Take command of the flight deck and navigate the global skies.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/wrtFLhwu168',
+    vrExperience: {
+      scenes: [
+        {
+          id: 'environment',
+          title: 'The Flight Deck',
+          description: 'Experience the most advanced workstation in the world.',
+          hotspots: [
+            { id: '1', label: 'Navigation Console', info: 'Precision tools to chart the global course.', x: 50, y: 60 },
+            { id: '2', label: 'Communications', info: 'Coordinating with ATC for a safe journey.', x: 30, y: 40 }
+          ]
+        },
+        {
+          id: 'responsibilities',
+          title: 'Cruising Phase',
+          description: 'Managing system safety at 35,000 feet.',
+          hotspots: []
+        },
+        {
+          id: 'lifestyle',
+          title: 'A Global Life',
+          description: 'A look at the structured, high-responsibility travel lifestyle.',
+          hotspots: []
+        }
+      ]
+    },
     reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
     primaryExam: { 
       name: 'IGRUA Entrance', 
