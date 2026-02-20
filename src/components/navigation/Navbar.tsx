@@ -4,16 +4,21 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Home, Compass, User, LogIn, LogOut } from 'lucide-react';
+import { Home, Compass, User, LogIn, LogOut, ShieldCheck } from 'lucide-react';
 import { BackgroundMusic } from '@/components/audio/BackgroundMusic';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useDoc, useFirestore } from '@/firebase';
 import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
+import { doc } from 'firebase/firestore';
 
 export function Navbar() {
   const pathname = usePathname();
   const { user } = useUser();
   const auth = useAuth();
+  const db = useFirestore();
+
+  const userDocRef = user ? doc(db, 'users', user.uid) : null;
+  const { data: userData } = useDoc(userDocRef);
 
   const handleLogin = async () => {
     if (!auth) return;
@@ -29,6 +34,11 @@ export function Navbar() {
     if (!auth) return;
     await signOut(auth);
   };
+
+  const isAdmin = userData?.role === 'admin';
+  const isAdminView = pathname.startsWith('/admin');
+
+  if (isAdminView) return null;
 
   const navItems = [
     { href: '/', icon: Home, label: 'Home' },
@@ -60,8 +70,17 @@ export function Navbar() {
             </Link>
           );
         })}
+
+        {isAdmin && (
+          <Link href="/admin/dashboard" className="relative group">
+             <div className="flex flex-col items-center gap-1 text-slate-500 hover:text-indigo-600 transition-colors">
+                <ShieldCheck className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-bold uppercase tracking-widest">Admin</span>
+              </div>
+          </Link>
+        )}
         
-        <div className="w-px h-8 bg-muted-foreground/20" />
+        <div className="w-px h-8 bg-slate-200" />
         
         {user ? (
           <button onClick={handleLogout} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-destructive transition-colors">

@@ -9,6 +9,8 @@
         "uid": { "type": "string" },
         "displayName": { "type": "string" },
         "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin", "moderator"], "default": "user" },
         "xp": { "type": "number", "description": "Current experience points" },
         "level": { "type": "number", "description": "Current player level" },
         "badges": { "type": "array", "items": { "type": "string" } },
@@ -16,6 +18,17 @@
         "lastActive": { "type": "string", "format": "date-time" }
       },
       "required": ["uid", "xp"]
+    },
+    "CareerUpdate": {
+      "title": "Career Update",
+      "description": "Audit log for career modifications.",
+      "type": "object",
+      "properties": {
+        "careerId": { "type": "string" },
+        "adminId": { "type": "string" },
+        "action": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      }
     }
   },
   "auth": {
@@ -25,6 +38,10 @@
     "/users/{userId}": {
       "schema": "UserProfile",
       "description": "Individual user progress and profile data."
+    },
+    "/audit_logs/{logId}": {
+      "schema": "CareerUpdate",
+      "description": "Admin action history."
     }
   }
 }
