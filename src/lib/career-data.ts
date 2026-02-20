@@ -85,6 +85,35 @@ export const CAREER_PATHS: CareerPath[] = [
     ]
   },
   {
+    id: 'ai-res',
+    name: 'AI Researcher',
+    role: 'Pushes the boundaries of artificial intelligence.',
+    eligibility: 'PhD or Master\'s in AI/ML.',
+    skills: ['Deep Learning', 'PyTorch', 'Mathematics'],
+    salary: '₹12L - ₹60L+',
+    domainId: 'tech',
+    description: 'Design the algorithms that will shape the next era of computing.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    reality: {
+      pressure: 'high',
+      balance: 'flexible',
+      stability: 'growing'
+    },
+    primaryExam: {
+      name: 'GATE (CS)',
+      description: 'Entrance for Master\'s and PhD programs in top Indian institutes.',
+      frequency: 'Annual',
+      eligibility: 'Bachelor\'s Degree'
+    },
+    alternativeExams: [
+      { name: 'IIIT-H / ISI Entrance', description: 'Specialized research entrances.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+    ],
+    backupCareers: [
+      { id: 'ml-eng', name: 'ML Engineer', matchReason: 'Translates AI research into production models.' },
+      { id: 'stats', name: 'Statistician', matchReason: 'Deep focus on data modeling and analysis.' }
+    ]
+  },
+  {
     id: 'doctor',
     name: 'Doctor',
     role: 'Specializes in clinical health and medicine.',
@@ -113,6 +142,34 @@ export const CAREER_PATHS: CareerPath[] = [
       { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' },
       { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' },
       { id: 'nursing', name: 'Nursing Specialist', matchReason: 'Critical frontline healthcare and direct patient interaction.' }
+    ]
+  },
+  {
+    id: 'nurse',
+    name: 'Nurse Practitioner',
+    role: 'Advanced nursing care and patient management.',
+    eligibility: 'B.Sc. Nursing + Specialized Certification.',
+    skills: ['Patient Care', 'Emergency Response', 'Clinical Monitoring'],
+    salary: '₹4L - ₹15L+',
+    domainId: 'health',
+    description: 'Provide essential, high-quality healthcare at the bedside and beyond.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
+    reality: {
+      pressure: 'high',
+      balance: 'structured',
+      stability: 'stable'
+    },
+    primaryExam: {
+      name: 'AIIMS Nursing Entrance',
+      description: 'Premier entrance for nursing education in India.',
+      frequency: 'Annual',
+      eligibility: 'High School (PCB)'
+    },
+    alternativeExams: [
+      { name: 'JIPMER B.Sc. Entrance', description: 'Specialized healthcare entrance.', frequency: 'Annual', eligibility: 'High School' }
+    ],
+    backupCareers: [
+      { id: 'health-admin', name: 'Hospital Administrator', matchReason: 'Managing the operations of healthcare facilities.' }
     ]
   },
   {
@@ -296,6 +353,34 @@ export const CAREER_PATHS: CareerPath[] = [
     backupCareers: [
       { id: 'ui-ux', name: 'UI/UX Designer', matchReason: 'Focuses on user experience and digital interface design.' },
       { id: 'art-dir', name: 'Assistant Art Director', matchReason: 'Manages visual styles for films or advertising campaigns.' }
+    ]
+  },
+  {
+    id: 'ui-ux',
+    name: 'Product Designer',
+    role: 'Designs user interfaces and product experiences.',
+    eligibility: 'Bachelor\'s in Design or relevant certification.',
+    skills: ['Figma', 'User Research', 'Prototyping'],
+    salary: '₹8L - ₹30L+',
+    domainId: 'tech',
+    description: 'Blend psychology and art to build digital products people love.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/u_v_L07e59k',
+    reality: {
+      pressure: 'moderate',
+      balance: 'flexible',
+      stability: 'growing'
+    },
+    primaryExam: {
+      name: 'UCEED',
+      description: 'Undergraduate Common Entrance Examination for Design.',
+      frequency: 'Annual',
+      eligibility: '10+2'
+    },
+    alternativeExams: [
+      { name: 'NID Entrance', description: 'National Institute of Design entrance.', frequency: 'Annual', eligibility: '10+2' }
+    ],
+    backupCareers: [
+      { id: 'gd', name: 'Graphic Designer', matchReason: 'Foundational visual communication skills.' }
     ]
   }
 ];

@@ -1,47 +1,32 @@
 'use server';
 /**
  * @fileOverview This file implements a Genkit flow to generate personalized career recommendations
- * based on user interests for the CareerCraft 3D application.
- *
- * - smartCareerRecommendation - A function that handles the career recommendation process.
- * - SmartCareerRecommendationInput - The input type for the smartCareerRecommendation function.
- * - SmartCareerRecommendationOutput - The return type for the smartCareerRecommendation function.
+ * across multiple discovery layers for the CareerCraft 3D application.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { CAREER_PATHS } from '@/lib/career-data';
 
-const SmartCareerRecommendationInputSchema = z.object({
-  userInterests: z
-    .array(z.string())
-    .describe('A list of strings representing the user\'s interests.'),
+const RecommendationSchema = z.object({
+  name: z.string().describe('The name of the recommended career path.'),
+  description: z.string().describe('A brief and engaging description explaining why it aligns with the user\'s interests.'),
+  alignmentScore: z.number().min(1).max(100).describe('A score from 1 to 100 indicating how well this career aligns with the user\'s interests.'),
+  category: z.enum(['primary', 'alternative', 'cross-domain', 'hidden-gem']).describe('The strategic layer this recommendation belongs to.'),
 });
-export type SmartCareerRecommendationInput = z.infer<
-  typeof SmartCareerRecommendationInputSchema
->;
+
+const SmartCareerRecommendationInputSchema = z.object({
+  userInterests: z.array(z.string()).describe('A list of strings representing the user\'s interests.'),
+});
+export type SmartCareerRecommendationInput = z.infer<typeof SmartCareerRecommendationInputSchema>;
 
 const SmartCareerRecommendationOutputSchema = z.object({
-  recommendations: z
-    .array(
-      z.object({
-        name: z.string().describe('The name of the recommended career path.'),
-        description:
-          z.string().describe('A brief description of the career path and why it aligns with the user\'s interests.'),
-        alignmentScore:
-          z.number().min(1).max(100).describe('A score from 1 to 100 indicating how well this career aligns with the user\'s interests.'),
-      })
-    )
-    .describe('A list of personalized career recommendations.'),
-  isFallback: z.boolean().optional().describe('Indicates if this is fallback data because the AI API is disabled.'),
+  recommendations: z.array(RecommendationSchema).describe('A tiered list of personalized career recommendations (aim for 12-15 total).'),
+  isFallback: z.boolean().optional().describe('Indicates if this is fallback data.'),
 });
-export type SmartCareerRecommendationOutput = z.infer<
-  typeof SmartCareerRecommendationOutputSchema
->;
+export type SmartCareerRecommendationOutput = z.infer<typeof SmartCareerRecommendationOutputSchema>;
 
-export async function smartCareerRecommendation(
-  input: SmartCareerRecommendationInput
-): Promise<SmartCareerRecommendationOutput> {
+export async function smartCareerRecommendation(input: SmartCareerRecommendationInput): Promise<SmartCareerRecommendationOutput> {
   return smartCareerRecommendationFlow(input);
 }
 
@@ -49,14 +34,16 @@ const prompt = ai.definePrompt({
   name: 'smartCareerRecommendationPrompt',
   input: { schema: SmartCareerRecommendationInputSchema },
   output: { schema: SmartCareerRecommendationOutputSchema },
-  prompt: `You are a helpful and experienced career advisor for CareerCraft 3D.
-Your task is to generate a list of personalized career recommendations based on the user's provided interests.
-For each recommendation, you must provide a career path name, a brief and engaging description explaining why it aligns with the user's interests, and an alignment score from 1 to 100.
+  prompt: `You are a strategic career architect for CareerCraft 3D.
+Your task is to generate an expansive list of 12-15 career recommendations based on the user's interests: {{{userInterests}}}.
 
-Aim to provide 3 to 5 diverse recommendations.
+Organize recommendations into these 4 layers:
+1. PRIMARY: Top 3-5 absolute best fits.
+2. ALTERNATIVE: 4-5 strong alternatives in related fields.
+3. CROSS-DOMAIN: 3-4 paths that blend different interests (e.g., Tech + Art = UI/UX).
+4. HIDDEN-GEM: 2-3 emerging or unique careers that match the user's vibe.
 
-User Interests:
-{{{userInterests}}}`,
+For each, provide a name, a compelling 'why this matches' description, and an alignment score.`,
 });
 
 const smartCareerRecommendationFlow = ai.defineFlow(
@@ -68,28 +55,35 @@ const smartCareerRecommendationFlow = ai.defineFlow(
   async (input) => {
     try {
       const { output } = await prompt(input);
-      if (!output) {
-        throw new Error('No career recommendations were generated.');
-      }
+      if (!output) throw new Error('No recommendations generated.');
       return { ...output, isFallback: false };
     } catch (error: any) {
-      // Check if it's a 403 or API disabled error
-      if (error.message?.includes('403') || error.message?.includes('disabled')) {
-        console.warn('AI API is disabled. Providing fallback career recommendations.');
-        
-        // Simple fallback logic: Match local careers based on keywords if possible
-        const fallbacks = CAREER_PATHS.slice(0, 3).map(path => ({
-          name: path.name,
-          description: `(AI Simulation) Based on your interests in ${input.userInterests.join(', ')}, we recommend exploring ${path.name}. This field offers great growth potential and aligns with your curiosity.`,
-          alignmentScore: 85 + Math.floor(Math.random() * 10)
-        }));
+      console.warn('AI API Error, providing rich simulated fallback:', error.message);
+      
+      const layers = [
+        { cat: 'primary', count: 3, scoreRange: [90, 98] },
+        { cat: 'alternative', count: 4, scoreRange: [80, 89] },
+        { cat: 'cross-domain', count: 3, scoreRange: [75, 85] },
+        { cat: 'hidden-gem', count: 2, scoreRange: [70, 80] }
+      ];
 
-        return {
-          recommendations: fallbacks,
-          isFallback: true
-        };
-      }
-      throw error;
+      const fallbacks: any[] = [];
+      let pathIdx = 0;
+      
+      layers.forEach(layer => {
+        for(let i=0; i < layer.count; i++) {
+          const path = CAREER_PATHS[pathIdx % CAREER_PATHS.length];
+          fallbacks.push({
+            name: path.name,
+            description: `Based on your curiosity in ${input.userInterests.slice(0, 2).join(' and ')}, this path offers a perfect blend of challenge and growth.`,
+            alignmentScore: layer.scoreRange[0] + Math.floor(Math.random() * (layer.scoreRange[1] - layer.scoreRange[0])),
+            category: layer.cat
+          });
+          pathIdx++;
+        }
+      });
+
+      return { recommendations: fallbacks, isFallback: true };
     }
   }
 );
