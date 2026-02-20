@@ -7,10 +7,15 @@ import { initializeFirebase } from './init';
 export const FirebaseClientProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const { firebaseApp, firestore, auth } = useMemo(() => initializeFirebase(), []);
+  // Ensure Firebase is initialized only once on the client
+  const instances = useMemo(() => initializeFirebase(), []);
 
   return (
-    <FirebaseProvider firebaseApp={firebaseApp} firestore={firestore} auth={auth}>
+    <FirebaseProvider 
+      firebaseApp={instances.firebaseApp} 
+      firestore={instances.firestore} 
+      auth={instances.auth}
+    >
       {children}
     </FirebaseProvider>
   );

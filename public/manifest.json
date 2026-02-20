@@ -1,11 +1,10 @@
-
 {
   "name": "CareerCraft 3D",
   "short_name": "CareerCraft",
-  "description": "Gamified AI Career Guidance for 12th Students",
+  "description": "Gamified Career Discovery Platform",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#E3F2FD",
+  "background_color": "#F0F9FF",
   "theme_color": "#4CAF50",
   "icons": [
     {
