@@ -4,11 +4,11 @@
 import { use } from 'react';
 import { motion } from 'framer-motion';
 import { CAREER_PATHS } from '@/lib/career-data';
-import { CareerRoadmap } from '@/components/career/Roadmap';
+import { PathExplorer } from '@/components/career/PathExplorer';
 import { UserStats } from '@/components/gamification/UserStats';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Wallet, BrainCircuit, Target, Star } from 'lucide-react';
+import { ArrowLeft, Wallet, BrainCircuit, Target, Star, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -37,8 +37,8 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
                 {career.domainId.toUpperCase()}
               </Badge>
               <div className="flex items-center text-yellow-300 gap-1">
-                <Star className="w-4 h-4 fill-current" />
-                <span className="text-sm font-bold">Trending</span>
+                <Shield className="w-4 h-4 fill-current" />
+                <span className="text-sm font-bold">Failure-Safe Route Active</span>
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-headline font-bold text-white mb-6">
@@ -62,7 +62,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           >
             {[
               { icon: Wallet, label: "Avg. Salary", val: career.salary, color: "bg-blue-500" },
-              { icon: Target, label: "Eligibility", val: career.eligibility, color: "bg-accent" },
+              { icon: Target, label: "Starting Goal", val: career.primaryExam.name, color: "bg-accent" },
               { icon: BrainCircuit, label: "Key Skills", val: career.skills.join(', '), color: "bg-primary" }
             ].map((stat, i) => (
               <div key={i} className="bg-white p-6 rounded-3xl shadow-xl border border-primary/5">
@@ -83,8 +83,8 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
             className="bg-accent p-8 rounded-3xl shadow-2xl text-white relative overflow-hidden"
           >
             <div className="relative z-10">
-              <h3 className="text-2xl font-bold mb-4">Ready to Commit?</h3>
-              <p className="text-white/80 mb-6">Unlock the full step-by-step roadmap and start earning badges for this path.</p>
+              <h3 className="text-2xl font-bold mb-4">Start Your Journey</h3>
+              <p className="text-white/80 mb-6">Unlock all routes and start earning the "Resilient Thinker" badge today.</p>
               <Button className="w-full h-12 bg-white text-accent hover:bg-white/90 rounded-2xl font-bold">
                 Join Path Journey
               </Button>
@@ -93,13 +93,15 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           </motion.div>
         </div>
 
-        {/* The 3-Stage Roadmap */}
+        {/* The 3-Stage Failure-Safe Roadmap */}
         <div className="mt-20">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-headline font-bold mb-4">Interactive Path Roadmap</h2>
-            <p className="text-muted-foreground text-lg">Click on each stage to reveal the milestones you'll need to reach.</p>
+            <h2 className="text-4xl md:text-5xl font-headline font-bold mb-4">The Multi-Route Roadmap</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              We've mapped every way you can reach your goal. One exam is just one door — if it doesn't open, we'll show you three more.
+            </p>
           </div>
-          <CareerRoadmap careerId={id} />
+          <PathExplorer career={career} />
         </div>
       </div>
     </div>

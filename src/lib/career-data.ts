@@ -1,4 +1,17 @@
 
+export interface Exam {
+  name: string;
+  description: string;
+  frequency: string;
+  eligibility: string;
+}
+
+export interface BackupPath {
+  id: string;
+  name: string;
+  matchReason: string;
+}
+
 export interface CareerPath {
   id: string;
   name: string;
@@ -8,6 +21,9 @@ export interface CareerPath {
   salary: string;
   domainId: string;
   description: string;
+  primaryExam: Exam;
+  alternativeExams: Exam[];
+  backupCareers: BackupPath[];
 }
 
 export interface CareerDomain {
@@ -37,7 +53,46 @@ export const CAREER_PATHS: CareerPath[] = [
     skills: ['Python', 'Problem Solving', 'System Design'],
     salary: '$80k - $200k',
     domainId: 'tech',
-    description: 'Transform ideas into digital realities using code.'
+    description: 'Transform ideas into digital realities using code.',
+    primaryExam: {
+      name: 'JEE Mains & Advanced',
+      description: 'The standard entry path for top engineering institutes.',
+      frequency: 'Annual',
+      eligibility: 'High School (Science Stream)'
+    },
+    alternativeExams: [
+      { name: 'BITSAT / VITEEE', description: 'Exams for premier private universities.', frequency: 'Annual', eligibility: 'High School' },
+      { name: 'CUET', description: 'Entrance for Central Universities with CS programs.', frequency: 'Annual', eligibility: 'High School' }
+    ],
+    backupCareers: [
+      { id: 'da', name: 'Data Analyst', matchReason: 'Uses the same logical thinking and coding foundations.' },
+      { id: 'it-con', name: 'IT Consultant', matchReason: 'Focuses on system architecture and business solutions.' }
+    ]
+  },
+  {
+    id: 'doctor',
+    name: 'Doctor',
+    role: 'Specializes in clinical health and medicine.',
+    eligibility: 'MD Degree + Residency.',
+    skills: ['Surgery', 'Diagnosis', 'Patient Care'],
+    salary: '$250k - $600k',
+    domainId: 'health',
+    description: 'Treat complex heart conditions and save lives.',
+    primaryExam: {
+      name: 'NEET UG',
+      description: 'The primary gateway to medical school (MBBS).',
+      frequency: 'Annual',
+      eligibility: 'High School (Biology Stream)'
+    },
+    alternativeExams: [
+      { name: 'State Medical Entrances', description: 'Alternative state-level government medical seats.', frequency: 'Annual', eligibility: 'High School' },
+      { name: 'Private Univ Tests', description: 'Specific exams for renowned private medical colleges.', frequency: 'Annual', eligibility: 'High School' }
+    ],
+    backupCareers: [
+      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through movement.' },
+      { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' },
+      { id: 'nursing', name: 'Nursing Specialist', matchReason: 'Critical frontline healthcare and direct patient interaction.' }
+    ]
   },
   {
     id: 'ai-res',
@@ -47,37 +102,20 @@ export const CAREER_PATHS: CareerPath[] = [
     skills: ['Mathematics', 'TensorFlow', 'Deep Learning'],
     salary: '$120k - $350k',
     domainId: 'tech',
-    description: 'Design algorithms that think and learn like humans.'
-  },
-  {
-    id: 'cyber',
-    name: 'Cybersecurity Specialist',
-    role: 'Protects systems from digital threats.',
-    eligibility: 'Certifications like CISSP or Bachelor\'s in InfoSec.',
-    skills: ['Networking', 'Ethical Hacking', 'Risk Management'],
-    salary: '$90k - $180k',
-    domainId: 'tech',
-    description: 'Guard the digital borders against malicious intruders.'
-  },
-  {
-    id: 'cardio',
-    name: 'Cardiologist',
-    role: 'Specializes in heart and vascular health.',
-    eligibility: 'MD Degree + Residency + Fellowship.',
-    skills: ['Surgery', 'Diagnosis', 'Patient Care'],
-    salary: '$250k - $600k',
-    domainId: 'health',
-    description: 'Treat complex heart conditions and save lives.'
-  },
-  {
-    id: 'uiux',
-    name: 'UI/UX Designer',
-    role: 'Designs intuitive digital interfaces.',
-    eligibility: 'Portfolio + Degree in Design or Psychology.',
-    skills: ['Figma', 'User Research', 'Prototyping'],
-    salary: '$70k - $150k',
-    domainId: 'arts',
-    description: 'Craft seamless and beautiful experiences for users.'
+    description: 'Design algorithms that think and learn like humans.',
+    primaryExam: {
+      name: 'GATE (CS/AI)',
+      description: 'The standard path for Masters/PhD in top Research Labs.',
+      frequency: 'Annual',
+      eligibility: 'Engineering Degree'
+    },
+    alternativeExams: [
+      { name: 'University Specific Tests', description: 'Research-focused entrances for specialized AI labs.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+    ],
+    backupCareers: [
+      { id: 'de', name: 'Data Engineer', matchReason: 'Handles the infrastructure that makes AI possible.' },
+      { id: 'ml-ops', name: 'MLOps Engineer', matchReason: 'Focuses on the deployment and lifecycle of AI models.' }
+    ]
   }
 ];
 
