@@ -1,0 +1,23 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-bg",
+      "description": "Abstract 3D geometric shapes",
+      "imageUrl": "https://picsum.photos/seed/career-hero/1200/800",
+      "imageHint": "3D abstract background"
+    },
+    {
+      "id": "tech-domain",
+      "description": "Technology career icon",
+      "imageUrl": "https://picsum.photos/seed/tech/400/300",
+      "imageHint": "technology code"
+    },
+    {
+      "id": "health-domain",
+      "description": "Healthcare career icon",
+      "imageUrl": "https://picsum.photos/seed/health/400/300",
+      "imageHint": "medical healthcare"
+    }
+  ]
+}
