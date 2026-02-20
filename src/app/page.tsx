@@ -1,103 +1,155 @@
 
 "use client";
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Compass, Sparkles, UserCheck, Play, MousePointer2 } from 'lucide-react';
+import { INTERESTS } from '@/lib/career-data';
+import { ArrowRight, Compass, Sparkles, UserCheck, Play, MousePointer2, Check, RefreshCcw } from 'lucide-react';
 import { UserStats } from '@/components/gamification/UserStats';
+import { toast } from '@/hooks/use-toast';
 
 export default function WelcomePage() {
+  const [selected, setSelected] = useState<string[]>([]);
+  const router = useRouter();
+
+  const toggleInterest = (interest: string) => {
+    if (selected.includes(interest)) {
+      setSelected(selected.filter(i => i !== interest));
+    } else {
+      if (selected.length >= 5) {
+        toast({ title: "Limit Reached", description: "Select up to 5 interests." });
+        return;
+      }
+      setSelected([...selected, interest]);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (selected.length < 2) {
+      toast({ title: "Select More", description: "Choose at least 2 interests to begin." });
+      return;
+    }
+    const params = new URLSearchParams();
+    selected.forEach(s => params.append('interests', s));
+    router.push(`/recommendations?${params.toString()}`);
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center p-6 bg-transparent">
+    <div className="relative min-h-screen overflow-x-hidden flex flex-col bg-transparent">
       <UserStats />
       
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="max-w-4xl w-full text-center relative z-20"
-      >
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col items-center justify-center p-6 text-center relative z-20">
         <motion.div
-          animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-          className="inline-flex items-center justify-center p-6 glass-morphism rounded-[40px] mb-12 shadow-2xl relative"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-4xl"
         >
-          <Compass className="w-16 h-16 text-primary" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-accent rounded-full animate-ping" />
-        </motion.div>
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+            className="inline-flex items-center justify-center p-4 glass-morphism rounded-3xl mb-8"
+          >
+            <Compass className="w-12 h-12 text-primary" />
+          </motion.div>
 
-        <h1 className="text-7xl md:text-9xl font-headline font-bold mb-8 text-foreground tracking-tighter leading-none">
-          CareerCraft <span className="text-accent">3D</span>
-        </h1>
-        
-        <p className="text-xl md:text-3xl text-muted-foreground font-body max-w-3xl mx-auto mb-16 leading-relaxed font-light">
-          Step into a <span className="text-primary font-bold">multi-dimensional</span> journey where your passions become your profession.
-        </p>
+          <h1 className="text-6xl md:text-8xl font-headline font-bold mb-6 tracking-tighter leading-none">
+            CareerCraft <span className="text-accent">3D</span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-12 font-light">
+            Step into a multi-dimensional journey where your curiosity builds your future.
+          </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-          {[
-            { icon: UserCheck, title: "Self Discovery", text: "Map your innate passions" },
-            { icon: Sparkles, title: "AI Guided", text: "Deep matches in layers" },
-            { icon: Play, title: "Simulation", text: "Test drive your future" }
-          ].map((feature, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 + i * 0.2 }}
-              className="glass-morphism p-8 rounded-[40px] group hover:scale-105 transition-all duration-500"
+          <div className="flex justify-center gap-4 mb-20">
+            <Button 
+              size="lg" 
+              onClick={() => document.getElementById('discovery')?.scrollIntoView({ behavior: 'smooth' })}
+              className="h-16 px-10 rounded-full bg-primary text-xl font-bold shadow-2xl hover:scale-105 transition-all"
             >
-              <div className="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                <feature.icon className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{feature.text}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="perspective-1000"
-        >
-          <Link href="/discovery">
-            <Button size="lg" className="h-20 px-12 text-2xl rounded-full bg-primary hover:bg-primary/90 shadow-2xl shadow-primary/40 group relative overflow-hidden">
-              <span className="relative z-10 flex items-center gap-3">
-                Begin Your Adventure
-                <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              Start Discovering
+              <ArrowRight className="ml-2 w-6 h-6" />
             </Button>
-          </Link>
+          </div>
         </motion.div>
+      </section>
 
-        <div className="mt-12 flex items-center justify-center gap-2 text-muted-foreground font-bold uppercase tracking-[0.3em] text-[10px]">
-          <MousePointer2 className="w-3 h-3 animate-bounce" />
-          Immersive Interactive Prototype
+      {/* Curiosity Section */}
+      <section id="discovery" className="py-32 px-6 bg-white/30 backdrop-blur-sm relative z-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-16"
+          >
+            <h2 className="text-4xl md:text-6xl font-headline font-bold mb-4">What ignites your curiosity?</h2>
+            <p className="text-xl text-muted-foreground">Select up to 5 interests to map your personalized career route.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-16">
+            {INTERESTS.map((interest, idx) => {
+              const isSelected = selected.includes(interest);
+              return (
+                <motion.div
+                  key={interest}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  onClick={() => toggleInterest(interest)}
+                  className={`h-24 cursor-pointer rounded-2xl flex items-center justify-center p-4 transition-all duration-300 relative overflow-hidden group border-2 ${
+                    isSelected 
+                    ? 'bg-primary border-primary text-white shadow-lg' 
+                    : 'bg-white/60 border-white/20 hover:border-primary/50 text-foreground'
+                  }`}
+                >
+                  <span className="font-bold text-center z-10">{interest}</span>
+                  {isSelected && (
+                    <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+                      <Check className="w-3 h-3 text-primary" />
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="flex justify-center gap-4">
+            <Button
+              variant="outline"
+              onClick={() => setSelected([])}
+              className="rounded-full h-14 px-8 font-bold border-muted-foreground/20"
+            >
+              <RefreshCcw className="w-5 h-5 mr-2" />
+              Reset
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={selected.length < 2}
+              className="rounded-full h-14 px-12 bg-accent text-lg font-bold shadow-xl shadow-accent/20 group"
+            >
+              Explore My Map
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
         </div>
-      </motion.div>
+      </section>
 
-      {/* Floating 3D Shapes */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Background elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
         <motion.div 
-          animate={{ 
-            rotate: 360,
-            y: [0, 100, 0],
-            x: [0, 50, 0]
-          }}
+          animate={{ scale: [1, 1.2, 1], rotate: [0, 90, 0] }}
           transition={{ duration: 20, repeat: Infinity }}
-          className="absolute top-1/4 left-1/4 w-32 h-32 border-4 border-primary/20 rounded-3xl rotate-12"
+          className="absolute -top-1/4 -left-1/4 w-full h-full bg-primary/5 blur-[120px] rounded-full"
         />
         <motion.div 
-          animate={{ 
-            rotate: -360,
-            y: [0, -150, 0],
-            x: [0, -80, 0]
-          }}
+          animate={{ scale: [1.2, 1, 1.2], rotate: [0, -90, 0] }}
           transition={{ duration: 25, repeat: Infinity }}
-          className="absolute bottom-1/4 right-1/4 w-48 h-48 border-4 border-accent/20 rounded-full"
+          className="absolute -bottom-1/4 -right-1/4 w-full h-full bg-accent/5 blur-[120px] rounded-full"
         />
       </div>
     </div>

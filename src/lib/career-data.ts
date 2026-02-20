@@ -58,12 +58,11 @@ export interface CareerDomain {
 export const DOMAINS: CareerDomain[] = [
   { id: 'tech', name: 'Technology', icon: 'Cpu', description: 'Building the digital future.' },
   { id: 'health', name: 'Healthcare', icon: 'Stethoscope', description: 'Caring for humanity.' },
-  { id: 'aviation', name: 'Aviation & Logistics', icon: 'Plane', description: 'Mastering the skies and global movement.' },
+  { id: 'aviation', name: 'Aviation & Logistics', icon: 'Plane', description: 'Mastering the skies.' },
   { id: 'arts', name: 'Arts & Design', icon: 'Palette', description: 'Shaping visual experiences.' },
-  { id: 'business', name: 'Business', icon: 'Briefcase', description: 'Managing markets and growth.' },
-  { id: 'science', name: 'Pure Science', icon: 'Microscope', description: 'Unlocking the laws of nature.' },
-  { id: 'edu', name: 'Education', icon: 'GraduationCap', description: 'Empowering the next generation.' },
-  { id: 'law', name: 'Law & Policy', icon: 'Scale', description: 'Upholding justice and order.' },
+  { id: 'business', name: 'Business', icon: 'Briefcase', description: 'Managing markets.' },
+  { id: 'science', name: 'Pure Science', icon: 'Microscope', description: 'Unlocking nature.' },
+  { id: 'law', name: 'Law & Policy', icon: 'Scale', description: 'Upholding justice.' },
   { id: 'eng', name: 'Engineering', icon: 'Wrench', description: 'Solving real-world problems.' },
 ];
 
@@ -72,179 +71,109 @@ export const CAREER_PATHS: CareerPath[] = [
     id: 'swe',
     name: 'Software Engineer',
     role: 'Develops applications and systems.',
-    eligibility: 'Bachelor\'s in Computer Science or related field.',
-    skills: ['Python', 'Problem Solving', 'System Design'],
-    salary: '₹6L - ₹35L+',
+    eligibility: 'B.Tech/B.E in CS or related.',
+    skills: ['Python', 'System Design', 'React'],
+    salary: '₹6L - ₹45L+',
     domainId: 'tech',
-    description: 'Transform ideas into digital realities using code.',
+    description: 'Build the software that powers the world.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
-    reality: {
-      pressure: 'moderate',
-      balance: 'flexible',
-      stability: 'growing'
-    },
-    primaryExam: {
-      name: 'JEE Mains & Advanced',
-      description: 'The standard entry path for top engineering institutes.',
-      frequency: 'Annual',
-      eligibility: 'High School (Science Stream)'
-    },
-    alternativeExams: [
-      { name: 'BITSAT / VITEEE', description: 'Exams for premier private universities.', frequency: 'Annual', eligibility: 'High School' },
-      { name: 'CUET', description: 'Entrance for Central Universities with CS programs.', frequency: 'Annual', eligibility: 'High School' }
-    ],
-    backupCareers: [
-      { id: 'da', name: 'Data Analyst', matchReason: 'Uses the same logical thinking and coding foundations.' },
-      { id: 'it-con', name: 'IT Consultant', matchReason: 'Focuses on system architecture and business solutions.' }
-    ],
-    simulation: [
-      {
-        id: 'swe-1',
-        task: "A user reports that the 'Login' button isn't working on the mobile app. What's your first move?",
-        options: [
-          { label: "Rewrite the code", description: "Start from scratch for the login module.", isCorrect: false, feedback: "A bit extreme! Always try to find the root cause first." },
-          { label: "Check logs", description: "Look at the server logs to see the specific error.", isCorrect: true, feedback: "Perfect. Data-driven debugging saves hours of work." },
-          { label: "Blame the internet", description: "Tell the user their connection is bad.", isCorrect: false, feedback: "Not very helpful. We must ensure our app is resilient." }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'architect',
-    name: 'Architect',
-    role: 'Designs and plans buildings and structures.',
-    eligibility: 'Bachelor of Architecture (B.Arch).',
-    skills: ['AutoCAD', 'Sketching', 'Spatial Design'],
-    salary: '₹4L - ₹25L+',
-    domainId: 'eng',
-    description: 'Blend art and engineering to shape the skyline.',
-    reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
-    primaryExam: { name: 'NATA', description: 'National Aptitude Test in Architecture.', frequency: 'Annual', eligibility: '12th (Physics, Chem, Math)' },
-    alternativeExams: [
-      { name: 'JEE Paper 2', description: 'Entrance for B.Arch in NITs and SPAs.', frequency: 'Annual', eligibility: '12th' }
-    ],
-    backupCareers: [
-      { id: 'int-des', name: 'Interior Designer', matchReason: 'Focuses on the aesthetics and function of indoor spaces.' }
-    ],
+    reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
+    primaryExam: { name: 'JEE Advanced', description: 'Top IIT entrance.', frequency: 'Annual', eligibility: '12th Science' },
+    alternativeExams: [{ name: 'BITSAT', description: 'BITS Pilani entrance.', frequency: 'Annual', eligibility: '12th Science' }],
+    backupCareers: [{ id: 'da', name: 'Data Analyst', matchReason: 'Strong analytical overlap.' }],
     simulation: []
   },
   {
-    id: 'lawyer',
-    name: 'Corporate Lawyer',
-    role: 'Advises businesses on legal rights and obligations.',
-    eligibility: 'Integrated LLB (5 years) or LLB (3 years).',
-    skills: ['Critical Thinking', 'Negotiation', 'Research'],
-    salary: '₹8L - ₹40L+',
-    domainId: 'law',
-    description: 'Navigate the complex world of corporate regulations and justice.',
-    reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
-    primaryExam: { name: 'CLAT', description: 'Common Law Admission Test for National Law Universities.', frequency: 'Annual', eligibility: '12th' },
-    alternativeExams: [
-      { name: 'AILET', description: 'Entrance for National Law University, Delhi.', frequency: 'Annual', eligibility: '12th' }
-    ],
-    backupCareers: [
-      { id: 'legal-analyst', name: 'Legal Analyst', matchReason: 'Involves intensive research and documentation support.' }
-    ],
-    simulation: []
-  },
-  {
-    id: 'chef',
-    name: 'Executive Chef',
-    role: 'Manages kitchen operations and creates culinary masterpieces.',
-    eligibility: 'Degree/Diploma in Hotel Management.',
-    skills: ['Culinary Arts', 'Leadership', 'Creativity'],
-    salary: '₹5L - ₹30L+',
-    domainId: 'arts',
-    description: 'Transform ingredients into unforgettable sensory experiences.',
-    reality: { pressure: 'high', balance: 'demanding', stability: 'variable' },
-    primaryExam: { name: 'NCHMCT JEE', description: 'Entrance for top Institute of Hotel Management (IHM) branches.', frequency: 'Annual', eligibility: '12th' },
+    id: 'psychologist',
+    name: 'Clinical Psychologist',
+    role: 'Diagnoses and treats mental health issues.',
+    eligibility: 'Masters/M.Phil in Clinical Psychology.',
+    skills: ['Empathy', 'Active Listening', 'Counseling'],
+    salary: '₹4L - ₹20L+',
+    domainId: 'health',
+    description: 'Understand the human mind and help people overcome mental barriers.',
+    reality: { pressure: 'moderate', balance: 'flexible', stability: 'stable' },
+    primaryExam: { name: 'TISS-NET', description: 'Entrance for premium psychology courses.', frequency: 'Annual', eligibility: 'Graduation' },
     alternativeExams: [],
-    backupCareers: [
-      { id: 'food-stylist', name: 'Food Stylist', matchReason: 'Focuses on the visual presentation of food for media.' }
-    ],
+    backupCareers: [{ id: 'hr', name: 'HR Specialist', matchReason: 'Focuses on human behavior in organizations.' }],
+    simulation: []
+  },
+  {
+    id: 'eee',
+    name: 'Electrical Engineer (EEE)',
+    role: 'Works with electrical systems and power generation.',
+    eligibility: 'B.E/B.Tech in Electrical Engineering.',
+    skills: ['Power Systems', 'Control Systems', 'Circuit Design'],
+    salary: '₹5L - ₹30L+',
+    domainId: 'eng',
+    description: 'Design and manage large-scale electrical grids and power systems.',
+    reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
+    primaryExam: { name: 'GATE', description: 'Standard for M.Tech and PSU jobs.', frequency: 'Annual', eligibility: 'B.Tech Final Year' },
+    alternativeExams: [],
+    backupCareers: [{ id: 'solar-eng', name: 'Solar Energy Consultant', matchReason: 'Leverages electrical expertise in renewables.' }],
+    simulation: []
+  },
+  {
+    id: 'ece',
+    name: 'Electronics & Communication (ECE)',
+    role: 'Designs electronic circuits and communication systems.',
+    eligibility: 'B.E/B.Tech in ECE.',
+    skills: ['VLSI', 'Signal Processing', 'Embedded Systems'],
+    salary: '₹6L - ₹35L+',
+    domainId: 'eng',
+    description: 'The bridge between hardware and software, focusing on chips and networking.',
+    reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
+    primaryExam: { name: 'GATE (ECE)', description: 'Primary technical entrance.', frequency: 'Annual', eligibility: 'B.Tech' },
+    alternativeExams: [],
+    backupCareers: [{ id: 'net-admin', name: 'Network Administrator', matchReason: 'Applies communication theory to IT infrastructure.' }],
     simulation: []
   },
   {
     id: 'doctor',
-    name: 'Doctor',
-    role: 'Specializes in clinical health and medicine.',
-    eligibility: 'MBBS + MD/MS Degree.',
-    skills: ['Surgery', 'Diagnosis', 'Patient Care'],
-    salary: '₹8L - ₹50L+',
+    name: 'General Physician',
+    role: 'Provides primary medical care.',
+    eligibility: 'MBBS Degree.',
+    skills: ['Diagnosis', 'Pathology', 'Clinical Care'],
+    salary: '₹10L - ₹60L+',
     domainId: 'health',
-    description: 'Treat complex conditions and save lives through clinical excellence.',
+    description: 'The front line of healthcare, identifying and treating illnesses.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
-    reality: {
-      pressure: 'high',
-      balance: 'demanding',
-      stability: 'stable'
-    },
-    primaryExam: {
-      name: 'NEET UG',
-      description: 'The primary gateway to medical school (MBBS) in India.',
-      frequency: 'Annual',
-      eligibility: 'High School (Biology Stream)'
-    },
-    alternativeExams: [
-      { name: 'State Medical Entrances', description: 'Alternative state-level government medical seats.', frequency: 'Annual', eligibility: 'High School' }
-    ],
-    backupCareers: [
-      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' }
-    ],
+    reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
+    primaryExam: { name: 'NEET UG', description: 'Standard medical entrance.', frequency: 'Annual', eligibility: '12th Biology' },
+    alternativeExams: [],
+    backupCareers: [{ id: 'pharma', name: 'Pharmacologist', matchReason: 'Uses medical knowledge for drug research.' }],
     simulation: []
   },
   {
     id: 'pilot',
     name: 'Commercial Pilot',
-    role: 'Operates commercial aircraft for airlines.',
-    eligibility: '10+2 with Physics and Maths + Commercial Pilot License (CPL).',
-    skills: ['Navigation', 'Meteorology', 'Quick Decision Making'],
-    salary: '₹10L - ₹80L+',
+    role: 'Operates commercial aircraft.',
+    eligibility: '12th Science + CPL.',
+    skills: ['Navigation', 'Aviation Safety', 'Quick Thinking'],
+    salary: '₹12L - ₹85L+',
     domainId: 'aviation',
-    description: 'Command the skies and connect the world through aviation.',
+    description: 'Take command of the flight deck and navigate the global skies.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/wrtFLhwu168',
-    reality: {
-      pressure: 'high',
-      balance: 'structured',
-      stability: 'stable'
-    },
-    primaryExam: {
-      name: 'IGRUA Entrance',
-      description: 'The standard entry for premier flight training institutes.',
-      frequency: 'Annual',
-      eligibility: '10+2 (Physics & Maths)'
-    },
+    reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
+    primaryExam: { name: 'IGRUA Entrance', description: 'Top flight school entrance.', frequency: 'Annual', eligibility: '12th PCM' },
     alternativeExams: [],
-    backupCareers: [
-      { id: 'atc', name: 'Air Traffic Controller', matchReason: 'Uses the same aviation knowledge and high-pressure coordination.' }
-    ],
+    backupCareers: [{ id: 'atc', name: 'Air Traffic Controller', matchReason: 'Critical aviation coordination skills.' }],
     simulation: []
   },
   {
     id: 'singer',
     name: 'Professional Singer',
-    role: 'Vocal performer for studio recordings and live shows.',
-    eligibility: 'Training in Classical or Contemporary Music.',
-    skills: ['Vocal Control', 'Performance', 'Composition'],
+    role: 'Performs and records music.',
+    eligibility: 'Musical training/Certification.',
+    skills: ['Vocal Control', 'Stage Presence', 'Recording'],
     salary: '₹3L - ₹50L+',
     domainId: 'arts',
-    description: 'Express emotions and stories through the power of your voice.',
+    description: 'Express emotions and stories through vocal performance.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/2vS_6-A0GTo',
-    reality: {
-      pressure: 'moderate',
-      balance: 'flexible',
-      stability: 'variable'
-    },
-    primaryExam: {
-      name: 'Trinity Certifications',
-      description: 'International certification levels in music.',
-      frequency: 'Bi-Annual',
-      eligibility: 'Open Entry'
-    },
+    reality: { pressure: 'moderate', balance: 'flexible', stability: 'variable' },
+    primaryExam: { name: 'Trinity Vocals', description: 'Global certification.', frequency: 'Bi-Annual', eligibility: 'Open' },
     alternativeExams: [],
-    backupCareers: [
-      { id: 'music-teacher', name: 'Music Educator', matchReason: 'Pass on your skills to the next generation.' }
-    ],
+    backupCareers: [{ id: 'edu-music', name: 'Music Teacher', matchReason: 'Teaching vocal techniques.' }],
     simulation: []
   }
 ];
