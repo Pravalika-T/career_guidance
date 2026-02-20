@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Cpu, 
@@ -75,7 +76,14 @@ const DOMAIN_ELEMENTS: Record<string, { icon: any, color: string }[]> = {
 };
 
 export function DynamicBackground({ domainId }: DynamicBackgroundProps) {
+  const [mounted, setMounted] = useState(false);
   const elements = DOMAIN_ELEMENTS[domainId] || DOMAIN_ELEMENTS.tech;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
@@ -108,8 +116,8 @@ export function DynamicBackground({ domainId }: DynamicBackgroundProps) {
           <motion.div
             key={i}
             initial={{ 
-              x: Math.random() * 100 + '%', 
-              y: Math.random() * 100 + '%',
+              x: (Math.random() * 100) + '%', 
+              y: (Math.random() * 100) + '%',
               opacity: 0,
               scale: 0.5
             }}
