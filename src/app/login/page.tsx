@@ -9,7 +9,6 @@ import {
   Lock, 
   ArrowRight, 
   LogIn, 
-  Github,
   Chrome,
   Loader2,
   ChevronLeft
@@ -43,22 +42,26 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleInitialProfile = async (user: any) => {
-    const userRef = doc(db, 'users', user.uid);
-    const userSnap = await getDoc(userRef);
-    
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        uid: user.uid,
-        displayName: user.displayName || name || 'Explorer',
-        email: user.email,
-        photoURL: user.photoURL || '',
-        role: 'user',
-        xp: 0,
-        level: 1,
-        badges: ['Path Explorer'],
-        savedCareers: [],
-        lastActive: serverTimestamp()
-      });
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          displayName: user.displayName || name || 'Explorer',
+          email: user.email,
+          photoURL: user.photoURL || '',
+          role: 'user',
+          xp: 0,
+          level: 1,
+          badges: ['Path Explorer'],
+          savedCareers: [],
+          lastActive: serverTimestamp()
+        }, { merge: true });
+      }
+    } catch (e) {
+      console.error("Profile sync error:", e);
     }
   };
 
@@ -68,7 +71,7 @@ export default function LoginPage() {
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
       await handleInitialProfile(cred.user);
-      toast({ title: "Welcome back!", description: "Successfully signed in." });
+      toast({ title: "Welcome back!", description: "Accessing your career map." });
       router.push('/profile');
     } catch (err: any) {
       toast({ variant: "destructive", title: "Login Failed", description: err.message });
@@ -82,7 +85,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(cred.user, { displayName: name });
+      if (name) {
+        await updateProfile(cred.user, { displayName: name });
+      }
       await handleInitialProfile(cred.user);
       toast({ title: "Account Created!", description: "Welcome to CareerCraft 3D." });
       router.push('/profile');
@@ -101,7 +106,7 @@ export default function LoginPage() {
       await handleInitialProfile(cred.user);
       router.push('/profile');
     } catch (err: any) {
-      toast({ variant: "destructive", title: "Google Login Failed", description: err.message });
+      toast({ variant: "destructive", title: "Google Identity Error", description: err.message });
     } finally {
       setLoading(false);
     }
@@ -109,7 +114,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Dynamic Background Blobs */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/10 blur-[100px] rounded-full" />
         <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-accent/10 blur-[100px] rounded-full" />
@@ -179,7 +183,7 @@ export default function LoginPage() {
               <TabsContent value="signup" className="space-y-6">
                 <form onSubmit={handleEmailSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label className="text-xs font-bold uppercase tracking-widest ml-1">Your Full Name</Label>
+                    <Label className="text-xs font-bold uppercase tracking-widest ml-1">Full Name</Label>
                     <Input 
                       placeholder="Jane Doe" 
                       required 
@@ -219,7 +223,7 @@ export default function LoginPage() {
               <div className="mt-8">
                 <div className="relative mb-8">
                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-muted-foreground/10"></div></div>
-                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-transparent px-2 text-muted-foreground font-bold">Or continue with</span></div>
+                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-transparent px-2 text-muted-foreground font-bold">Or</span></div>
                 </div>
 
                 <Button 
@@ -229,7 +233,7 @@ export default function LoginPage() {
                   className="w-full h-14 rounded-2xl border-none bg-white shadow-xl flex items-center justify-center gap-3 font-bold hover:bg-slate-50"
                 >
                   <Chrome className="w-5 h-5" />
-                  Google Identity
+                  Continue with Google
                 </Button>
               </div>
             </Tabs>

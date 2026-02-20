@@ -5,7 +5,7 @@ import { AdminLayout } from '@/components/admin/AdminLayout';
 import { useUser, useDoc, useFirestore } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function RootAdminLayout({
@@ -17,6 +17,7 @@ export default function RootAdminLayout({
   const db = useFirestore();
   const router = useRouter();
   const pathname = usePathname();
+  const [isVerifying, setIsVerifying] = useState(true);
   
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData, loading: docLoading } = useDoc(userDocRef);
@@ -24,38 +25,35 @@ export default function RootAdminLayout({
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
-    // Only redirect if we are NOT on the login page
-    if (!authLoading && !isLoginPage) {
+    if (!authLoading) {
       if (!user) {
-        router.push('/admin/login');
+        if (!isLoginPage) router.push('/admin/login');
+        setIsVerifying(false);
       } else if (!docLoading) {
-        // If document check is finished and role is not admin, redirect
         if (!userData || userData.role !== 'admin') {
-          console.warn('ADMIN ACCESS DENIED: User lacks admin role in Firestore.');
-          router.push('/admin/login');
+          console.warn('ADMIN ACCESS DENIED: Missing role in Firestore.');
+          if (!isLoginPage) router.push('/admin/login');
         }
+        setIsVerifying(false);
       }
     }
   }, [user, userData, authLoading, docLoading, router, isLoginPage]);
 
-  // Always render login page content
   if (isLoginPage) {
     return <>{children}</>;
   }
 
-  // Show skeleton while verifying access
-  if (authLoading || (user && docLoading)) {
+  if (authLoading || (user && docLoading) || isVerifying) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="space-y-4 w-64 text-center">
           <Skeleton className="h-12 w-full rounded-2xl" />
-          <p className="text-muted-foreground animate-pulse font-bold text-sm tracking-widest">VERIFYING PROTOCOLS...</p>
+          <p className="text-muted-foreground animate-pulse font-bold text-sm tracking-widest uppercase">Verifying Protocols...</p>
         </div>
       </div>
     );
   }
 
-  // Final check to prevent layout shift or rendering admin UI to unauthorized users
   if (!user || userData?.role !== 'admin') {
     return null; 
   }

@@ -10,7 +10,9 @@ import {
   ArrowRight, 
   AlertCircle,
   Loader2,
-  ChevronLeft
+  ChevronLeft,
+  Copy,
+  CheckCircle2
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
@@ -28,7 +30,9 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [debugUid, setDebugUid] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   
   const auth = useAuth();
   const router = useRouter();
@@ -38,32 +42,28 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setDebugUid(null);
 
     try {
-      // 1. Attempt Firebase Auth Login
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // 2. Immediately verify Admin Role in Firestore
       const userDocRef = doc(db, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
       
       if (userDoc.exists() && userDoc.data().role === 'admin') {
-        toast({ title: "System Unlocked", description: "Administrator access granted." });
+        toast({ title: "Access Granted", description: "Welcome back, Architect." });
         router.push('/admin/dashboard');
       } else {
-        // Correct password, but missing the 'admin' role in Firestore
-        await signOut(auth); // Log them out immediately
-        setError("ACCESS DENIED: Your account is authenticated, but lacks the 'admin' role in the system database.");
-        console.warn('ADMIN ROLE MISSING:', user.uid);
+        await signOut(auth);
+        setError("ACCESS DENIED: Authenticated successfully, but 'role: admin' was not found in your Firestore user document.");
+        setDebugUid(user.uid);
       }
     } catch (err: any) {
       console.error('Login error:', err);
       let message = "Invalid credentials. Please try again.";
       if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         message = "Incorrect email or password.";
-      } else if (err.code === 'auth/too-many-requests') {
-        message = "Account temporarily locked due to many failed attempts. Try again later.";
       }
       setError(message);
     } finally {
@@ -71,9 +71,17 @@ export default function AdminLoginPage() {
     }
   };
 
+  const copyUid = () => {
+    if (debugUid) {
+      navigator.clipboard.writeText(debugUid);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({ title: "UID Copied", description: "Use this ID in the Firestore 'users' collection." });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Decorative Background */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-primary/5 blur-[100px] rounded-full" />
         <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[100px] rounded-full" />
@@ -87,7 +95,7 @@ export default function AdminLoginPage() {
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center text-sm font-bold text-slate-400 hover:text-primary transition-colors mb-6 group">
             <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
-            Back to Public Site
+            Public Interface
           </Link>
           <div className="w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center mx-auto mb-4 text-primary">
             <ShieldCheck size={32} />
@@ -97,23 +105,37 @@ export default function AdminLoginPage() {
         </div>
 
         <Card className="border-none shadow-2xl rounded-[32px] overflow-hidden bg-white">
-          <CardHeader className="pt-10 px-10 pb-2">
+          <CardHeader className="pt-10 px-10 pb-2 text-center">
             <CardTitle className="text-xl font-bold">Admin Sign In</CardTitle>
-            <CardDescription>Enter your administrative credentials to continue.</CardDescription>
+            <CardDescription>Enter administrative credentials to continue.</CardDescription>
           </CardHeader>
           
           <CardContent className="p-10">
             {error && (
-              <Alert variant="destructive" className="mb-6 rounded-2xl border-none bg-rose-50 text-rose-600">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle className="font-bold">Entry Restricted</AlertTitle>
-                <AlertDescription className="text-xs">{error}</AlertDescription>
-              </Alert>
+              <div className="space-y-4 mb-8">
+                <Alert variant="destructive" className="rounded-2xl border-none bg-rose-50 text-rose-600">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle className="font-bold">Entry Restricted</AlertTitle>
+                  <AlertDescription className="text-xs leading-relaxed">{error}</AlertDescription>
+                </Alert>
+                
+                {debugUid && (
+                  <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Your System UID</p>
+                    <div className="flex items-center justify-between gap-3">
+                      <code className="text-xs font-mono text-slate-600 truncate flex-1">{debugUid}</code>
+                      <Button size="icon" variant="ghost" className="h-8 w-8 rounded-lg" onClick={copyUid}>
+                        {copied ? <CheckCircle2 size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Email Address</Label>
+                <Label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Admin Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
                   <Input 
@@ -130,8 +152,7 @@ export default function AdminLoginPage() {
 
               <div className="space-y-2">
                 <div className="flex justify-between items-center px-1">
-                  <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-slate-400">Password</Label>
-                  <button type="button" className="text-[10px] font-bold text-primary hover:underline">System Recovery</button>
+                  <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-slate-400">Security Key</Label>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
@@ -162,13 +183,6 @@ export default function AdminLoginPage() {
                 )}
               </Button>
             </form>
-
-            <div className="mt-8 pt-8 border-t border-slate-100">
-              <p className="text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
-                By entering this console, you agree to the <br /> 
-                <span className="text-slate-900">System Governance & Privacy Protocols</span>
-              </p>
-            </div>
           </CardContent>
         </Card>
       </motion.div>
