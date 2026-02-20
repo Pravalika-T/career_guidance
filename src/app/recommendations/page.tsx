@@ -8,12 +8,12 @@ import { UserStats } from '@/components/gamification/UserStats';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Trophy, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { Sparkles, Trophy, ArrowRight, Loader2, AlertCircle, Info } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 export default function RecommendationsPage() {
   const searchParams = useSearchParams();
-  const interests = searchParams.getAll('interests');
+  const interests = searchParams.get('interests') ? searchParams.getAll('interests') : [];
   const [data, setData] = useState<SmartCareerRecommendationOutput | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export default function RecommendationsPage() {
       }
     }
     fetchRecommendations();
-  }, [interests, router]);
+  }, [interests.length, router]);
 
   if (loading) {
     return (
@@ -55,44 +55,19 @@ export default function RecommendationsPage() {
           <Sparkles className="w-16 h-16 text-primary" />
         </motion.div>
         <h2 className="text-3xl font-headline font-bold mb-4 text-center">Crafting your destiny...</h2>
-        <p className="text-muted-foreground text-center">Our AI guide is analyzing {interests.length} interests to find your perfect match.</p>
+        <p className="text-muted-foreground text-center">Our AI guide is analyzing your interests to find your perfect match.</p>
       </div>
     );
   }
 
   if (error) {
-    const isApiDisabled = error.includes('API_DISABLED') || error.includes('403') || error.includes('disabled');
-    
     return (
       <div className="min-h-screen bg-background p-8 pt-24 max-w-4xl mx-auto flex flex-col items-center justify-center">
         <Alert variant="destructive" className="mb-8 p-6 rounded-3xl">
           <AlertCircle className="h-6 w-6" />
-          <AlertTitle className="text-xl font-bold mb-2">AI Service Configuration Required</AlertTitle>
+          <AlertTitle className="text-xl font-bold mb-2">Something went wrong</AlertTitle>
           <AlertDescription className="text-lg">
-            {isApiDisabled ? (
-              <div className="space-y-4">
-                <p>
-                  The Gemini AI model is ready, but the <strong>Generative Language API</strong> needs to be enabled for this project.
-                </p>
-                <div className="bg-white/10 p-4 rounded-xl text-sm font-mono break-all">
-                  Project Number: 935821130852
-                </div>
-                <a 
-                  href="https://console.developers.google.com/apis/api/generativelanguage.googleapis.com/overview?project=935821130852" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-destructive font-bold rounded-2xl hover:bg-white/90 transition-colors mt-2"
-                >
-                  Enable API in Google Console
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </a>
-                <p className="text-sm opacity-80 mt-4">
-                  After enabling, please wait 1-2 minutes for the changes to take effect before trying again.
-                </p>
-              </div>
-            ) : (
-              <p>{error}</p>
-            )}
+            {error}
           </AlertDescription>
         </Alert>
         <div className="flex gap-4">
@@ -121,6 +96,25 @@ export default function RecommendationsPage() {
           Based on your passion for <span className="text-primary font-bold">{interests.join(', ')}</span>, these paths offer the best alignment.
         </p>
       </div>
+
+      {data?.isFallback && (
+        <Alert className="mb-8 border-accent/50 bg-accent/5 rounded-3xl">
+          <Info className="h-5 w-5 text-accent" />
+          <AlertTitle className="font-bold">Simulation Mode Active</AlertTitle>
+          <AlertDescription className="flex flex-col gap-2">
+            <p>The Generative Language API is currently disabled. We're showing simulated results while you enable it.</p>
+            <a 
+              href="https://console.developers.google.com/apis/api/generativelanguage.googleapis.com/overview?project=935821130852" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-accent font-bold underline flex items-center gap-1"
+            >
+              Enable AI API in Google Console
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {data?.recommendations.map((career, i) => (
