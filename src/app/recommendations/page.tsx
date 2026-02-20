@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from 'react';
@@ -27,6 +26,7 @@ export default function RecommendationsPage() {
         return;
       }
       try {
+        setLoading(true);
         setError(null);
         const result = await smartCareerRecommendation({ userInterests: interests });
         setData(result);
@@ -35,7 +35,7 @@ export default function RecommendationsPage() {
         const currentXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
         localStorage.setItem('career_craft_xp', (currentXp + 50).toString());
       } catch (err: any) {
-        console.error(err);
+        console.error('Recommendation Error:', err);
         setError(err.message || 'An unexpected error occurred while generating recommendations.');
       } finally {
         setLoading(false);
@@ -61,31 +61,48 @@ export default function RecommendationsPage() {
   }
 
   if (error) {
+    const isApiDisabled = error.includes('API_DISABLED') || error.includes('403') || error.includes('disabled');
+    
     return (
       <div className="min-h-screen bg-background p-8 pt-24 max-w-4xl mx-auto flex flex-col items-center justify-center">
-        <Alert variant="destructive" className="mb-8">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>AI Service Error</AlertTitle>
-          <AlertDescription>
-            {error.includes('403') ? (
-              <span>
-                The AI model could not be reached. Please ensure the <strong>Generative Language API</strong> is enabled in your Google Cloud console.
-                <br />
+        <Alert variant="destructive" className="mb-8 p-6 rounded-3xl">
+          <AlertCircle className="h-6 w-6" />
+          <AlertTitle className="text-xl font-bold mb-2">AI Service Configuration Required</AlertTitle>
+          <AlertDescription className="text-lg">
+            {isApiDisabled ? (
+              <div className="space-y-4">
+                <p>
+                  The Gemini AI model is ready, but the <strong>Generative Language API</strong> needs to be enabled for this project.
+                </p>
+                <div className="bg-white/10 p-4 rounded-xl text-sm font-mono break-all">
+                  Project Number: 935821130852
+                </div>
                 <a 
-                  href="https://console.developers.google.com/apis/api/generativelanguage.googleapis.com/overview" 
+                  href="https://console.developers.google.com/apis/api/generativelanguage.googleapis.com/overview?project=935821130852" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="underline font-bold mt-2 inline-block"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-destructive font-bold rounded-2xl hover:bg-white/90 transition-colors mt-2"
                 >
-                  Enable API Here
+                  Enable API in Google Console
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </a>
-              </span>
-            ) : error}
+                <p className="text-sm opacity-80 mt-4">
+                  After enabling, please wait 1-2 minutes for the changes to take effect before trying again.
+                </p>
+              </div>
+            ) : (
+              <p>{error}</p>
+            )}
           </AlertDescription>
         </Alert>
-        <Button onClick={() => window.location.reload()} className="rounded-full px-8">
-          Try Again
-        </Button>
+        <div className="flex gap-4">
+          <Button onClick={() => router.push('/discovery')} variant="outline" className="rounded-full px-8 h-12">
+            Go Back
+          </Button>
+          <Button onClick={() => window.location.reload()} className="rounded-full px-8 h-12 bg-primary">
+            Try Again
+          </Button>
+        </div>
       </div>
     );
   }
@@ -119,7 +136,7 @@ export default function RecommendationsPage() {
                   <span className="text-xs uppercase font-bold">Match</span>
                   <span className="text-xl font-bold">{career.alignmentScore}%</span>
                 </div>
-                <CardTitle className="text-2xl pt-6 pr-16">{career.name}</CardTitle>
+                <CardTitle className="text-2xl pt-6 pr-16 font-bold">{career.name}</CardTitle>
               </CardHeader>
               <CardContent className="flex-1 mt-4">
                 <p className="text-muted-foreground line-clamp-4 leading-relaxed">
@@ -129,7 +146,7 @@ export default function RecommendationsPage() {
               <CardFooter className="pt-0">
                 <Button 
                   onClick={() => router.push(`/career/swe`)} 
-                  className="w-full rounded-2xl h-12 bg-primary hover:bg-primary/90 text-lg group"
+                  className="w-full rounded-2xl h-12 bg-primary hover:bg-primary/90 text-lg font-bold group"
                 >
                   Explore Roadmap
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -141,7 +158,7 @@ export default function RecommendationsPage() {
       </div>
 
       <div className="mt-16 text-center pb-12">
-        <Button variant="outline" onClick={() => router.push('/discovery')} className="rounded-full px-8 h-12">
+        <Button variant="outline" onClick={() => router.push('/discovery')} className="rounded-full px-8 h-12 font-bold">
           Redo Discovery
         </Button>
       </div>

@@ -64,10 +64,17 @@ const smartCareerRecommendationFlow = ai.defineFlow(
     outputSchema: SmartCareerRecommendationOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    if (!output) {
-      throw new Error('No career recommendations were generated.');
+    try {
+      const { output } = await prompt(input);
+      if (!output) {
+        throw new Error('No career recommendations were generated.');
+      }
+      return output;
+    } catch (error: any) {
+      if (error.message?.includes('403') || error.message?.includes('disabled')) {
+        throw new Error('API_DISABLED: The Generative Language API is not enabled. Please enable it in the Google Cloud Console.');
+      }
+      throw error;
     }
-    return output;
   }
 );
