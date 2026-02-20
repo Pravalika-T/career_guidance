@@ -270,6 +270,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           <RealityExplorer 
             metrics={career.reality} 
             careerName={career.name}
+            domainId={career.domainId}
             onClose={() => setIsRealityOpen(false)}
             onExplored={handleRealityExplored}
           />
