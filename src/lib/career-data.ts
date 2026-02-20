@@ -12,6 +12,12 @@ export interface BackupPath {
   matchReason: string;
 }
 
+export interface RealityMetrics {
+  pressure: 'low' | 'moderate' | 'high';
+  balance: 'flexible' | 'structured' | 'demanding';
+  stability: 'variable' | 'growing' | 'stable';
+}
+
 export interface CareerPath {
   id: string;
   name: string;
@@ -25,6 +31,7 @@ export interface CareerPath {
   alternativeExams: Exam[];
   backupCareers: BackupPath[];
   virtualExperienceUrl?: string;
+  reality: RealityMetrics;
 }
 
 export interface CareerDomain {
@@ -57,6 +64,11 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'tech',
     description: 'Transform ideas into digital realities using code.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    reality: {
+      pressure: 'moderate',
+      balance: 'flexible',
+      stability: 'growing'
+    },
     primaryExam: {
       name: 'JEE Mains & Advanced',
       description: 'The standard entry path for top engineering institutes.',
@@ -82,6 +94,11 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'health',
     description: 'Treat complex conditions and save lives through clinical excellence.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
+    reality: {
+      pressure: 'high',
+      balance: 'demanding',
+      stability: 'stable'
+    },
     primaryExam: {
       name: 'NEET UG',
       description: 'The primary gateway to medical school (MBBS) in India.',
@@ -108,6 +125,11 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'aviation',
     description: 'Command the skies and connect the world through aviation.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/wrtFLhwu168',
+    reality: {
+      pressure: 'high',
+      balance: 'structured',
+      stability: 'stable'
+    },
     primaryExam: {
       name: 'IGRUA Entrance / Flying Club Entrances',
       description: 'The standard entry for premier flight training institutes.',
@@ -134,6 +156,11 @@ export const CAREER_PATHS: CareerPath[] = [
     domainId: 'tech',
     description: 'Design algorithms that think and learn like humans.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    reality: {
+      pressure: 'moderate',
+      balance: 'flexible',
+      stability: 'growing'
+    },
     primaryExam: {
       name: 'GATE (CS/AI)',
       description: 'The standard path for Masters/PhD in top Indian research labs like IISc/IITs.',

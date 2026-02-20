@@ -1,10 +1,11 @@
 
 "use client";
 
-import { use } from 'react';
-import { motion } from 'framer-motion';
+import { use, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { CAREER_PATHS } from '@/lib/career-data';
 import { PathExplorer } from '@/components/career/PathExplorer';
+import { RealityExplorer } from '@/components/career/RealityExplorer';
 import { UserStats } from '@/components/gamification/UserStats';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,25 @@ import Link from 'next/link';
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const career = CAREER_PATHS.find(p => p.id === id) || CAREER_PATHS[0];
+  
+  const [showRealityPrompt, setShowRealityPrompt] = useState(false);
+  const [isRealityOpen, setIsRealityOpen] = useState(false);
+  const [hasExploredReality, setHasExploredReality] = useState(false);
+
+  useEffect(() => {
+    // Show prompt after a delay to ensure user has scrolled a bit
+    const timer = setTimeout(() => setShowRealityPrompt(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleRealityExplored = () => {
+    setHasExploredReality(true);
+    // Add XP for reality exploration
+    const currentXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
+    localStorage.setItem('career_craft_xp', (currentXp + 75).toString());
+    // Trigger update in UserStats (via storage event or state management in a real app)
+    window.dispatchEvent(new Event('storage'));
+  };
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -158,6 +178,44 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           </motion.div>
         </div>
       </div>
+
+      {/* Career Reality Prompt */}
+      <AnimatePresence>
+        {showRealityPrompt && !isRealityOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            className="fixed bottom-10 left-1/2 -translate-x-1/2 z-40 bg-white p-4 pr-6 rounded-full shadow-2xl border border-primary/20 flex items-center gap-4 group cursor-pointer"
+            onClick={() => setIsRealityOpen(true)}
+          >
+            <div className={`w-12 h-12 rounded-full ${hasExploredReality ? 'bg-primary' : 'bg-accent'} flex items-center justify-center text-white shadow-lg shadow-accent/20 group-hover:scale-110 transition-transform`}>
+              {hasExploredReality ? <Sparkles className="w-6 h-6" /> : <Info className="w-6 h-6" />}
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs uppercase font-bold text-muted-foreground tracking-widest">
+                {hasExploredReality ? 'Review Reality' : 'Want to see daily life?'}
+              </span>
+              <span className="text-sm font-bold">Explore Career Reality</span>
+            </div>
+            <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center group-hover:translate-x-1 transition-transform">
+              <Sparkles className="w-3 h-3 text-accent" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Reality Explorer Modal */}
+      <AnimatePresence>
+        {isRealityOpen && (
+          <RealityExplorer 
+            metrics={career.reality} 
+            careerName={career.name}
+            onClose={() => setIsRealityOpen(false)}
+            onExplored={handleRealityExplored}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
