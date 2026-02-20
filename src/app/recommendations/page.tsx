@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useEffect, useState, use } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { smartCareerRecommendation, type SmartCareerRecommendationOutput } from '@/ai/flows/smart-career-recommendation-flow';
@@ -9,13 +9,15 @@ import { UserStats } from '@/components/gamification/UserStats';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Sparkles, Trophy, ArrowRight, Loader2 } from 'lucide-react';
+import { Sparkles, Trophy, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 export default function RecommendationsPage() {
   const searchParams = useSearchParams();
   const interests = searchParams.getAll('interests');
   const [data, setData] = useState<SmartCareerRecommendationOutput | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -25,14 +27,16 @@ export default function RecommendationsPage() {
         return;
       }
       try {
+        setError(null);
         const result = await smartCareerRecommendation({ userInterests: interests });
         setData(result);
         
         // Bonus XP for completing discovery
         const currentXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
         localStorage.setItem('career_craft_xp', (currentXp + 50).toString());
-      } catch (error) {
-        console.error(error);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || 'An unexpected error occurred while generating recommendations.');
       } finally {
         setLoading(false);
       }
@@ -52,6 +56,36 @@ export default function RecommendationsPage() {
         </motion.div>
         <h2 className="text-3xl font-headline font-bold mb-4 text-center">Crafting your destiny...</h2>
         <p className="text-muted-foreground text-center">Our AI guide is analyzing {interests.length} interests to find your perfect match.</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background p-8 pt-24 max-w-4xl mx-auto flex flex-col items-center justify-center">
+        <Alert variant="destructive" className="mb-8">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>AI Service Error</AlertTitle>
+          <AlertDescription>
+            {error.includes('403') ? (
+              <span>
+                The AI model could not be reached. Please ensure the <strong>Generative Language API</strong> is enabled in your Google Cloud console.
+                <br />
+                <a 
+                  href="https://console.developers.google.com/apis/api/generativelanguage.googleapis.com/overview" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="underline font-bold mt-2 inline-block"
+                >
+                  Enable API Here
+                </a>
+              </span>
+            ) : error}
+          </AlertDescription>
+        </Alert>
+        <Button onClick={() => window.location.reload()} className="rounded-full px-8">
+          Try Again
+        </Button>
       </div>
     );
   }
@@ -94,7 +128,7 @@ export default function RecommendationsPage() {
               </CardContent>
               <CardFooter className="pt-0">
                 <Button 
-                  onClick={() => router.push(`/career/swe`)} // Mocking transition to a specific detail page
+                  onClick={() => router.push(`/career/swe`)} 
                   className="w-full rounded-2xl h-12 bg-primary hover:bg-primary/90 text-lg group"
                 >
                   Explore Roadmap
