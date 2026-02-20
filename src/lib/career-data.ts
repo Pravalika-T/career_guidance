@@ -80,7 +80,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹8L - ₹50L+',
     domainId: 'health',
     description: 'Treat complex conditions and save lives through clinical excellence.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/Yp_pX12vU-E',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
     primaryExam: {
       name: 'NEET UG',
       description: 'The primary gateway to medical school (MBBS) in India.',
