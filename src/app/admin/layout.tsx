@@ -27,8 +27,13 @@ export default function RootAdminLayout({
     if (!authLoading && !isLoginPage) {
       if (!user) {
         router.push('/admin/login');
-      } else if (!docLoading && userData && userData.role !== 'admin') {
-        router.push('/admin/login');
+      } else if (!docLoading) {
+        // Log UID to help user set up Firestore document manually if they are stuck
+        if (!userData || userData.role !== 'admin') {
+          console.warn('ADMIN ACCESS DENIED: User lacks admin role in Firestore.');
+          if (user) console.info('Please ensure a document exists at path: users/' + user.uid + ' with field { "role": "admin" }');
+          router.push('/admin/login');
+        }
       }
     }
   }, [user, userData, authLoading, docLoading, router, isLoginPage]);
