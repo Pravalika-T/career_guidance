@@ -18,6 +18,19 @@ export interface RealityMetrics {
   stability: 'variable' | 'growing' | 'stable';
 }
 
+export interface SimulationOption {
+  label: string;
+  description: string;
+  isCorrect: boolean;
+  feedback: string;
+}
+
+export interface SimulationScenario {
+  id: string;
+  task: string;
+  options: SimulationOption[];
+}
+
 export interface CareerPath {
   id: string;
   name: string;
@@ -32,6 +45,7 @@ export interface CareerPath {
   backupCareers: BackupPath[];
   virtualExperienceUrl?: string;
   reality: RealityMetrics;
+  simulation: SimulationScenario[];
 }
 
 export interface CareerDomain {
@@ -82,35 +96,25 @@ export const CAREER_PATHS: CareerPath[] = [
     backupCareers: [
       { id: 'da', name: 'Data Analyst', matchReason: 'Uses the same logical thinking and coding foundations.' },
       { id: 'it-con', name: 'IT Consultant', matchReason: 'Focuses on system architecture and business solutions.' }
-    ]
-  },
-  {
-    id: 'ai-res',
-    name: 'AI Researcher',
-    role: 'Pushes the boundaries of artificial intelligence.',
-    eligibility: 'PhD or Master\'s in AI/ML.',
-    skills: ['Deep Learning', 'PyTorch', 'Mathematics'],
-    salary: '₹12L - ₹60L+',
-    domainId: 'tech',
-    description: 'Design the algorithms that will shape the next era of computing.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
-    reality: {
-      pressure: 'high',
-      balance: 'flexible',
-      stability: 'growing'
-    },
-    primaryExam: {
-      name: 'GATE (CS)',
-      description: 'Entrance for Master\'s and PhD programs in top Indian institutes.',
-      frequency: 'Annual',
-      eligibility: 'Bachelor\'s Degree'
-    },
-    alternativeExams: [
-      { name: 'IIIT-H / ISI Entrance', description: 'Specialized research entrances.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
     ],
-    backupCareers: [
-      { id: 'ml-eng', name: 'ML Engineer', matchReason: 'Translates AI research into production models.' },
-      { id: 'stats', name: 'Statistician', matchReason: 'Deep focus on data modeling and analysis.' }
+    simulation: [
+      {
+        id: 'swe-1',
+        task: "A user reports that the 'Login' button isn't working on the mobile app. What's your first move?",
+        options: [
+          { label: "Rewrite the code", description: "Start from scratch for the login module.", isCorrect: false, feedback: "A bit extreme! Always try to find the root cause first." },
+          { label: "Check logs", description: "Look at the server logs to see the specific error.", isCorrect: true, feedback: "Perfect. Data-driven debugging saves hours of work." },
+          { label: "Blame the internet", description: "Tell the user their connection is bad.", isCorrect: false, feedback: "Not very helpful. We must ensure our app is resilient." }
+        ]
+      },
+      {
+        id: 'swe-2',
+        task: "The team is debating between a fast solution that might crash later vs a slower, stable one. You choose?",
+        options: [
+          { label: "Speed first", description: "Launch now, fix later.", isCorrect: false, feedback: "This creates 'technical debt' which can hurt the project later." },
+          { label: "Stability first", description: "Build it right, even if it takes more time.", isCorrect: true, feedback: "Great! Quality and reliability are the hallmarks of a pro engineer." }
+        ]
+      }
     ]
   },
   {
@@ -140,36 +144,25 @@ export const CAREER_PATHS: CareerPath[] = [
     ],
     backupCareers: [
       { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' },
-      { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' },
-      { id: 'nursing', name: 'Nursing Specialist', matchReason: 'Critical frontline healthcare and direct patient interaction.' }
-    ]
-  },
-  {
-    id: 'nurse',
-    name: 'Nurse Practitioner',
-    role: 'Advanced nursing care and patient management.',
-    eligibility: 'B.Sc. Nursing + Specialized Certification.',
-    skills: ['Patient Care', 'Emergency Response', 'Clinical Monitoring'],
-    salary: '₹4L - ₹15L+',
-    domainId: 'health',
-    description: 'Provide essential, high-quality healthcare at the bedside and beyond.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
-    reality: {
-      pressure: 'high',
-      balance: 'structured',
-      stability: 'stable'
-    },
-    primaryExam: {
-      name: 'AIIMS Nursing Entrance',
-      description: 'Premier entrance for nursing education in India.',
-      frequency: 'Annual',
-      eligibility: 'High School (PCB)'
-    },
-    alternativeExams: [
-      { name: 'JIPMER B.Sc. Entrance', description: 'Specialized healthcare entrance.', frequency: 'Annual', eligibility: 'High School' }
+      { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' }
     ],
-    backupCareers: [
-      { id: 'health-admin', name: 'Hospital Administrator', matchReason: 'Managing the operations of healthcare facilities.' }
+    simulation: [
+      {
+        id: 'doc-1',
+        task: "A patient comes in with a high fever and a cough. They are worried. How do you start?",
+        options: [
+          { label: "Listen carefully", description: "Ask them to describe their symptoms in detail.", isCorrect: true, feedback: "Excellent. Empathy and listening are 50% of the cure." },
+          { label: "Order all tests", description: "Send them for MRI and Blood tests immediately.", isCorrect: false, feedback: "Tests are expensive. Start with a physical checkup and history first." }
+        ]
+      },
+      {
+        id: 'doc-2',
+        task: "It's the end of a long 12-hour shift, but an emergency case just arrived. What do you do?",
+        options: [
+          { label: "Stay and help", description: "Your energy is low, but the patient needs you.", isCorrect: true, feedback: "Medicine is a calling. Resilience is key, though self-care is also vital later." },
+          { label: "Go home", description: "Shift is over, someone else will handle it.", isCorrect: false, feedback: "In emergencies, every hand counts. Doctors often go above and beyond." }
+        ]
+      }
     ]
   },
   {
@@ -194,13 +187,20 @@ export const CAREER_PATHS: CareerPath[] = [
       eligibility: '10+2 (Physics & Maths)'
     },
     alternativeExams: [
-      { name: 'NDA (Air Force)', description: 'Entrance for Indian Air Force pilot training.', frequency: 'Bi-Annual', eligibility: '10+2' },
-      { name: 'B.Sc. Aviation + CPL', description: 'Academic degree combined with private flight training.', frequency: 'Annual', eligibility: '10+2' }
+      { name: 'NDA (Air Force)', description: 'Entrance for Indian Air Force pilot training.', frequency: 'Bi-Annual', eligibility: '10+2' }
     ],
     backupCareers: [
-      { id: 'atc', name: 'Air Traffic Controller', matchReason: 'Uses the same aviation knowledge and high-pressure coordination.' },
-      { id: 'cabin-crew', name: 'Cabin Crew / Ground Staff', matchReason: 'Involves aircraft operations and passenger safety.' },
-      { id: 'aero-eng', name: 'Aerospace Engineer', matchReason: 'Focuses on the technical side of how planes fly.' }
+      { id: 'atc', name: 'Air Traffic Controller', matchReason: 'Uses the same aviation knowledge and high-pressure coordination.' }
+    ],
+    simulation: [
+      {
+        id: 'pilot-1',
+        task: "Mid-flight, you encounter unexpected heavy turbulence. Your passengers are getting scared.",
+        options: [
+          { label: "Calm announcement", description: "Explain the situation and reassure them.", isCorrect: true, feedback: "Great leadership. Communication prevents panic." },
+          { label: "Ignore it", description: "Just focus on the controls.", isCorrect: false, feedback: "Passengers look to the cockpit for reassurance during bumpy rides." }
+        ]
+      }
     ]
   },
   {
@@ -209,7 +209,7 @@ export const CAREER_PATHS: CareerPath[] = [
     role: 'Vocal performer for studio recordings and live shows.',
     eligibility: 'Training in Classical or Contemporary Music.',
     skills: ['Vocal Control', 'Performance', 'Composition'],
-    salary: '₹3L - ₹50L+ (Project-based)',
+    salary: '₹3L - ₹50L+',
     domainId: 'arts',
     description: 'Express emotions and stories through the power of your voice.',
     virtualExperienceUrl: 'https://www.youtube.com/embed/2vS_6-A0GTo',
@@ -225,162 +225,20 @@ export const CAREER_PATHS: CareerPath[] = [
       eligibility: 'Open Entry'
     },
     alternativeExams: [
-      { name: 'Reality Show Auditions', description: 'Direct platform for mass exposure and talent discovery.', frequency: 'Annual', eligibility: 'Talent-based' },
-      { name: 'Private Academy Programs', description: 'Specialized vocal training from recognized music gurus.', frequency: 'Ongoing', eligibility: 'Open' }
+      { name: 'Reality Show Auditions', description: 'Direct platform for mass exposure and talent discovery.', frequency: 'Annual', eligibility: 'Talent-based' }
     ],
     backupCareers: [
-      { id: 'music-teacher', name: 'Music Educator', matchReason: 'Pass on your skills to the next generation in schools or private setups.' },
-      { id: 'sound-eng', name: 'Sound Engineer', matchReason: 'Work with the technical side of recording and audio production.' },
-      { id: 'voice-artist', name: 'Voice Over Artist', matchReason: 'Use your vocal versatility for ads, movies, and animations.' }
-    ]
-  },
-  {
-    id: 'dancer',
-    name: 'Professional Dancer',
-    role: 'Performs in films, theatre, or live stage productions.',
-    eligibility: 'Training in specific dance forms (Classical/Hip-Hop/Contemporary).',
-    skills: ['Rhythm', 'Flexibility', 'Stage Presence'],
-    salary: '₹3L - ₹20L+',
-    domainId: 'arts',
-    description: 'Tell stories through movement and rhythmic expression.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/7V-6yY2f4Y0',
-    reality: {
-      pressure: 'high',
-      balance: 'demanding',
-      stability: 'variable'
-    },
-    primaryExam: {
-      name: 'Bachelors in Performing Arts (BPA)',
-      description: 'Formal degree specializing in Dance from top universities.',
-      frequency: 'Annual',
-      eligibility: '10+2'
-    },
-    alternativeExams: [
-      { name: 'Dance Academy Certifications', description: 'Intensive short-term professional programs.', frequency: 'Ongoing', eligibility: 'Audition-based' },
-      { name: 'International Workshops', description: 'Gaining global exposure and networking with choreographers.', frequency: 'Ongoing', eligibility: 'Open' }
+      { id: 'music-teacher', name: 'Music Educator', matchReason: 'Pass on your skills to the next generation.' }
     ],
-    backupCareers: [
-      { id: 'choreographer', name: 'Choreographer', matchReason: 'Transition to creating and directing dance sequences for others.' },
-      { id: 'fitness-instr', name: 'Dance Fitness Instructor', matchReason: 'Use dance for health and wellness programs like Zumba.' },
-      { id: 'event-coord', name: 'Event Coordinator', matchReason: 'Plan and manage stage shows and cultural festivals.' }
-    ]
-  },
-  {
-    id: 'accountant',
-    name: 'Chartered Accountant',
-    role: 'Expert in auditing, taxation, and financial accounting.',
-    eligibility: 'Cleared all levels of CA examination by ICAI.',
-    skills: ['Audit', 'Financial Analysis', 'Tax Laws'],
-    salary: '₹7L - ₹40L+',
-    domainId: 'business',
-    description: 'Ensure financial integrity and strategic growth for organizations.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-Y2Ff-V6Y',
-    reality: {
-      pressure: 'high',
-      balance: 'structured',
-      stability: 'stable'
-    },
-    primaryExam: {
-      name: 'CA Foundation / Inter / Final',
-      description: 'The rigorous 3-level path conducted by the ICAI.',
-      frequency: 'Bi-Annual',
-      eligibility: '10+2 for Foundation'
-    },
-    alternativeExams: [
-      { name: 'ACCA (Global)', description: 'International recognition in finance and accounting.', frequency: 'Quarterly', eligibility: '10+2' },
-      { name: 'CMA', description: 'Focus on management accounting and cost strategy.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
-    ],
-    backupCareers: [
-      { id: 'fin-analyst', name: 'Financial Analyst', matchReason: 'Analyzes market trends and financial data for investment.' },
-      { id: 'tax-consult', name: 'Tax Consultant', matchReason: 'Specializes in advisory services for tax planning.' }
-    ]
-  },
-  {
-    id: 'teacher',
-    name: 'School Teacher',
-    role: 'Educates students in specific subjects at primary/secondary levels.',
-    eligibility: 'Bachelor\'s + B.Ed + TET Certification.',
-    skills: ['Patience', 'Subject Knowledge', 'Communication'],
-    salary: '₹3L - ₹12L+',
-    domainId: 'edu',
-    description: 'Shape the minds and characters of the future generation.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-Y2Ff-V6Y',
-    reality: {
-      pressure: 'moderate',
-      balance: 'structured',
-      stability: 'stable'
-    },
-    primaryExam: {
-      name: 'CTET / State TET',
-      description: 'The mandatory qualifying exam for teaching in government schools.',
-      frequency: 'Annual',
-      eligibility: 'B.Ed / D.El.Ed'
-    },
-    alternativeExams: [
-      { name: 'B.Ed Entrance Exams', description: 'Gateways to premier teacher training colleges.', frequency: 'Annual', eligibility: 'Bachelor\'s' },
-      { name: 'Private School Panels', description: 'Direct interviews for prestigious private educational institutions.', frequency: 'Ongoing', eligibility: 'B.Ed' }
-    ],
-    backupCareers: [
-      { id: 'corp-trainer', name: 'Corporate Trainer', matchReason: 'Training adults in professional skills and soft skills.' },
-      { id: 'content-dev', name: 'EdTech Content Developer', matchReason: 'Create educational materials for digital learning platforms.' }
-    ]
-  },
-  {
-    id: 'designer',
-    name: 'Graphic Designer',
-    role: 'Creates visual concepts for branding and media.',
-    eligibility: 'Degree/Diploma in Design.',
-    skills: ['Photoshop', 'Typography', 'Branding'],
-    salary: '₹4L - ₹18L+',
-    domainId: 'arts',
-    description: 'Communicate ideas through visual storytelling and digital art.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/u_v_L07e59k',
-    reality: {
-      pressure: 'moderate',
-      balance: 'flexible',
-      stability: 'growing'
-    },
-    primaryExam: {
-      name: 'NID DAT / UCEED',
-      description: 'Entrance for India\'s top design institutes like NID and IITs.',
-      frequency: 'Annual',
-      eligibility: '10+2'
-    },
-    alternativeExams: [
-      { name: 'NIFT Entrance', description: 'Specialized in fashion and textile design.', frequency: 'Annual', eligibility: '10+2' },
-      { name: 'Portfolio Review', description: 'Direct entry into creative agencies based on design work.', frequency: 'Ongoing', eligibility: 'Open' }
-    ],
-    backupCareers: [
-      { id: 'ui-ux', name: 'UI/UX Designer', matchReason: 'Focuses on user experience and digital interface design.' },
-      { id: 'art-dir', name: 'Assistant Art Director', matchReason: 'Manages visual styles for films or advertising campaigns.' }
-    ]
-  },
-  {
-    id: 'ui-ux',
-    name: 'Product Designer',
-    role: 'Designs user interfaces and product experiences.',
-    eligibility: 'Bachelor\'s in Design or relevant certification.',
-    skills: ['Figma', 'User Research', 'Prototyping'],
-    salary: '₹8L - ₹30L+',
-    domainId: 'tech',
-    description: 'Blend psychology and art to build digital products people love.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/u_v_L07e59k',
-    reality: {
-      pressure: 'moderate',
-      balance: 'flexible',
-      stability: 'growing'
-    },
-    primaryExam: {
-      name: 'UCEED',
-      description: 'Undergraduate Common Entrance Examination for Design.',
-      frequency: 'Annual',
-      eligibility: '10+2'
-    },
-    alternativeExams: [
-      { name: 'NID Entrance', description: 'National Institute of Design entrance.', frequency: 'Annual', eligibility: '10+2' }
-    ],
-    backupCareers: [
-      { id: 'gd', name: 'Graphic Designer', matchReason: 'Foundational visual communication skills.' }
+    simulation: [
+      {
+        id: 'singer-1',
+        task: "You're recording a new song and the producer asks you to change your style slightly. How do you respond?",
+        options: [
+          { label: "Collaborate", description: "Try the new style and see how it sounds.", isCorrect: true, feedback: "Collaboration is huge in the arts. Flexibility helps you grow." },
+          { label: "Refuse", description: "My style is my identity, I won't change.", isCorrect: false, feedback: "Growth often happens when we step out of our comfort zone." }
+        ]
+      }
     ]
   }
 ];

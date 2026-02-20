@@ -6,11 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CAREER_PATHS, DOMAINS } from '@/lib/career-data';
 import { PathExplorer } from '@/components/career/PathExplorer';
 import { RealityExplorer } from '@/components/career/RealityExplorer';
+import { CareerSimulator } from '@/components/career/CareerSimulator';
 import { UserStats } from '@/components/gamification/UserStats';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles, Info, Compass, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles, Info, Compass, ArrowRight, Gamepad2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,6 +20,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
   
   const [showRealityPrompt, setShowRealityPrompt] = useState(false);
   const [isRealityOpen, setIsRealityOpen] = useState(false);
+  const [isSimOpen, setIsSimOpen] = useState(false);
   const [hasExploredReality, setHasExploredReality] = useState(false);
 
   // Find related careers in the same domain, excluding current one
@@ -116,9 +118,13 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           >
             <div className="relative z-10">
               <h3 className="text-2xl font-bold mb-4">Start Your Journey</h3>
-              <p className="text-white/80 mb-6">Unlock all routes and start earning the "Resilient Thinker" badge today.</p>
-              <Button className="w-full h-12 bg-white text-accent hover:bg-white/90 rounded-2xl font-bold">
-                Join Path Journey
+              <p className="text-white/80 mb-6">Experience a typical day as a {career.name} through our interactive simulator.</p>
+              <Button 
+                onClick={() => setIsSimOpen(true)}
+                className="w-full h-12 bg-white text-accent hover:bg-white/90 rounded-2xl font-bold"
+              >
+                <Gamepad2 className="w-5 h-5 mr-2" />
+                Play Simulation
               </Button>
             </div>
             <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-xl" />
@@ -240,7 +246,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
 
       {/* Career Reality Prompt */}
       <AnimatePresence>
-        {showRealityPrompt && !isRealityOpen && (
+        {showRealityPrompt && !isRealityOpen && !isSimOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -273,6 +279,16 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
             domainId={career.domainId}
             onClose={() => setIsRealityOpen(false)}
             onExplored={handleRealityExplored}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Career Simulator Modal */}
+      <AnimatePresence>
+        {isSimOpen && (
+          <CareerSimulator 
+            career={career}
+            onClose={() => setIsSimOpen(false)}
           />
         )}
       </AnimatePresence>
