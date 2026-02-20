@@ -8,7 +8,7 @@ import { PathExplorer } from '@/components/career/PathExplorer';
 import { UserStats } from '@/components/gamification/UserStats';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Wallet, BrainCircuit, Target, Star, Shield } from 'lucide-react';
+import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -102,6 +102,60 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
             </p>
           </div>
           <PathExplorer career={career} />
+        </div>
+
+        {/* Immersive Experience Section */}
+        <div className="mt-24">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+                <Video className="w-6 h-6" />
+              </div>
+              <h2 className="text-3xl font-headline font-bold">360° Virtual Career Experience</h2>
+            </div>
+            <Badge variant="outline" className="hidden md:flex items-center gap-1 border-primary/30 text-primary bg-primary/5 px-3 py-1">
+              <Sparkles className="w-3 h-3" />
+              Immersive Mode
+            </Badge>
+          </div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="relative group"
+          >
+            <div className="absolute -inset-4 bg-primary/5 rounded-[48px] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative bg-white p-4 rounded-[40px] shadow-2xl border border-primary/5 overflow-hidden">
+              {career.virtualExperienceUrl ? (
+                <div className="aspect-video w-full relative rounded-[28px] overflow-hidden bg-black shadow-inner">
+                  <iframe
+                    src={career.virtualExperienceUrl}
+                    className="absolute inset-0 w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    title={`${career.name} 360 Experience`}
+                  ></iframe>
+                </div>
+              ) : (
+                <div className="aspect-video w-full flex flex-col items-center justify-center bg-muted/30 rounded-[28px] border-2 border-dashed border-muted-foreground/20">
+                  <Video className="w-16 h-16 text-muted-foreground/30 mb-4" />
+                  <p className="text-xl font-bold text-muted-foreground">Virtual experience coming soon</p>
+                  <p className="text-muted-foreground mt-2">Our team is capturing this workspace for you.</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Sparkles className="w-4 h-4 text-primary" />
+                <p className="text-sm font-medium">Drag or move your phone to explore the workplace</p>
+              </div>
+              <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">
+                Experience powered by CareerCraft VR
+              </p>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

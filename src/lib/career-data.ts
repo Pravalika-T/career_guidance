@@ -24,6 +24,7 @@ export interface CareerPath {
   primaryExam: Exam;
   alternativeExams: Exam[];
   backupCareers: BackupPath[];
+  virtualExperienceUrl?: string;
 }
 
 export interface CareerDomain {
@@ -54,6 +55,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹6L - ₹35L+',
     domainId: 'tech',
     description: 'Transform ideas into digital realities using code.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-A8G_4Cq0',
     primaryExam: {
       name: 'JEE Mains & Advanced',
       description: 'The standard entry path for top engineering institutes.',
@@ -78,6 +80,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹8L - ₹50L+',
     domainId: 'health',
     description: 'Treat complex conditions and save lives through clinical excellence.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/Yp_pX12vU-E',
     primaryExam: {
       name: 'NEET UG',
       description: 'The primary gateway to medical school (MBBS) in India.',
@@ -103,6 +106,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹12L - ₹60L+',
     domainId: 'tech',
     description: 'Design algorithms that think and learn like humans.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-A8G_4Cq0',
     primaryExam: {
       name: 'GATE (CS/AI)',
       description: 'The standard path for Masters/PhD in top Indian research labs like IISc/IITs.',
