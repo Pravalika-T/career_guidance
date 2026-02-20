@@ -7,17 +7,16 @@ import { UserStats } from '@/components/gamification/UserStats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Zap, Star, Target, Shield, Compass, Sparkles, History, LogIn, User, MapIcon, ArrowRight } from 'lucide-react';
-import { useUser, useDoc, useFirestore, useAuth } from '@/firebase/index';
+import { useUser, useDoc, useFirestore } from '@/firebase/index';
 import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { CAREER_PATHS } from '@/lib/career-data';
 import Link from 'next/link';
+import { Progress } from '@/components/ui/progress';
 
 export default function ProfilePage() {
   const { user } = useUser();
   const db = useFirestore();
-  const auth = useAuth();
   
   const userDocRef = user ? doc(db!, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef);
@@ -31,15 +30,9 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  const handleLogin = async () => {
-    if (!auth) return;
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  };
-
   const xp = user ? (userData?.xp || 0) : localXp;
   const level = Math.floor(xp / 100) + 1;
-  const badges = userData?.badges || ['Path Explorer', 'Reality Aware'];
+  const badges = userData?.badges || ['Path Explorer'];
   const savedCareerIds = userData?.savedCareers || [];
   const savedCareers = CAREER_PATHS.filter(p => savedCareerIds.includes(p.id));
 
@@ -61,10 +54,12 @@ export default function ProfilePage() {
           <p className="text-muted-foreground text-lg">
             Sign in to sync your XP, unlock achievements, and save your career maps forever.
           </p>
-          <Button onClick={handleLogin} size="lg" className="w-full h-16 rounded-3xl text-xl font-bold bg-primary hover:bg-primary/90 shadow-xl">
-            <LogIn className="w-6 h-6 mr-3" />
-            Sign in with Google
-          </Button>
+          <Link href="/login" className="block w-full">
+            <Button size="lg" className="w-full h-16 rounded-3xl text-xl font-bold bg-primary hover:bg-primary/90 shadow-xl">
+              <LogIn className="w-6 h-6 mr-3" />
+              Sign in to CareerCraft
+            </Button>
+          </Link>
         </motion.div>
       </div>
     );

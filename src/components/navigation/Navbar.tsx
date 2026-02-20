@@ -2,17 +2,18 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Home, Compass, User, LogIn, LogOut, ShieldCheck } from 'lucide-react';
 import { BackgroundMusic } from '@/components/audio/BackgroundMusic';
 import { useUser, useAuth, useDoc, useFirestore } from '@/firebase';
-import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { doc } from 'firebase/firestore';
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { user } = useUser();
   const auth = useAuth();
   const db = useFirestore();
@@ -20,19 +21,10 @@ export function Navbar() {
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef);
 
-  const handleLogin = async () => {
-    if (!auth) return;
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error("Login failed", error);
-    }
-  };
-
   const handleLogout = async () => {
     if (!auth) return;
     await signOut(auth);
+    router.push('/');
   };
 
   const isAdmin = userData?.role === 'admin';
@@ -88,10 +80,10 @@ export function Navbar() {
             <span className="text-[10px] font-bold uppercase tracking-widest">Exit</span>
           </button>
         ) : (
-          <button onClick={handleLogin} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/login" className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
             <LogIn className="w-6 h-6" />
             <span className="text-[10px] font-bold uppercase tracking-widest">Sign In</span>
-          </button>
+          </Link>
         )}
       </nav>
     </div>

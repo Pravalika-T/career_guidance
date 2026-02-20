@@ -1,3 +1,4 @@
+
 export const firebaseConfig = {
   apiKey: "AIzaSyDummyKey",
   authDomain: "careercraft-3d.firebaseapp.com",
