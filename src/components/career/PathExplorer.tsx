@@ -7,6 +7,7 @@ import { CareerPath } from '@/lib/career-data';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { PrepGuide } from './PrepGuide';
 import { 
   Milestone, 
   Map as MapIcon, 
@@ -25,6 +26,7 @@ type Step = 'primary' | 'alternative' | 'backup';
 
 export function PathExplorer({ career }: PathExplorerProps) {
   const [activeStep, setActiveStep] = useState<Step>('primary');
+  const [showPrepGuide, setShowPrepGuide] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -37,6 +39,13 @@ export function PathExplorer({ career }: PathExplorerProps) {
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1 }
+  };
+
+  const handlePrepGuideClick = () => {
+    setShowPrepGuide(true);
+    const currentXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
+    localStorage.setItem('career_craft_xp', (currentXp + 25).toString());
+    window.dispatchEvent(new Event('storage'));
   };
 
   return (
@@ -105,7 +114,10 @@ export function PathExplorer({ career }: PathExplorerProps) {
                     <p className="text-lg font-bold">{career.primaryExam.eligibility}</p>
                   </div>
                 </div>
-                <Button className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold">
+                <Button 
+                  onClick={handlePrepGuideClick}
+                  className="h-14 px-8 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold"
+                >
                   View Preparation Guide
                   <ArrowUpRight className="ml-2 w-5 h-5" />
                 </Button>
@@ -226,6 +238,17 @@ export function PathExplorer({ career }: PathExplorerProps) {
             </div>
           )}
         </motion.div>
+      </AnimatePresence>
+
+      {/* Prep Guide Modal */}
+      <AnimatePresence>
+        {showPrepGuide && career.primaryExam.prepGuide && (
+          <PrepGuide 
+            examName={career.primaryExam.name}
+            guide={career.primaryExam.prepGuide}
+            onClose={() => setShowPrepGuide(false)}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
