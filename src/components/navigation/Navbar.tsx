@@ -1,14 +1,34 @@
 
-"use client";
+'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Home, Compass, User, Sparkles } from 'lucide-react';
+import { Home, Compass, User, LogIn, LogOut } from 'lucide-react';
 import { BackgroundMusic } from '@/components/audio/BackgroundMusic';
+import { useUser, useAuth } from '@/firebase';
+import { signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { Button } from '@/components/ui/button';
 
 export function Navbar() {
   const pathname = usePathname();
+  const { user } = useUser();
+  const auth = useAuth();
+
+  const handleLogin = async () => {
+    if (!auth) return;
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const handleLogout = async () => {
+    if (!auth) return;
+    await signOut(auth);
+  };
 
   const navItems = [
     { href: '/', icon: Home, label: 'Home' },
@@ -40,6 +60,20 @@ export function Navbar() {
             </Link>
           );
         })}
+        
+        <div className="w-px h-8 bg-muted-foreground/20" />
+        
+        {user ? (
+          <button onClick={handleLogout} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-destructive transition-colors">
+            <LogOut className="w-6 h-6" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Exit</span>
+          </button>
+        ) : (
+          <button onClick={handleLogin} className="flex flex-col items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+            <LogIn className="w-6 h-6" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Sign In</span>
+          </button>
+        )}
       </nav>
     </div>
   );

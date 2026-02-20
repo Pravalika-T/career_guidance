@@ -1,21 +1,41 @@
 
-"use client";
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Award, Zap } from 'lucide-react';
+import { useUser, useDoc, useFirestore } from '@/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export function UserStats() {
-  const [xp, setXp] = useState(0);
-  const [level, setLevel] = useState(1);
+  const { user } = useUser();
+  const db = useFirestore();
+  
+  // XP fallback if user is not logged in
+  const [localXp, setLocalXp] = useState(0);
+
+  // Sync from Firestore if logged in
+  const userDocRef = user ? doc(db!, 'users', user.uid) : null;
+  const { data: userData, loading } = useDoc(userDocRef);
 
   useEffect(() => {
-    // Mock hydration-safe stats
-    const savedXp = localStorage.getItem('career_craft_xp');
-    if (savedXp) setXp(parseInt(savedXp));
-    setLevel(Math.floor(xp / 100) + 1);
-  }, [xp]);
+    if (!user) {
+      const savedXp = localStorage.getItem('career_craft_xp');
+      if (savedXp) setLocalXp(parseInt(savedXp));
+      
+      const handleStorageChange = () => {
+        const updatedXp = localStorage.getItem('career_craft_xp');
+        if (updatedXp) setLocalXp(parseInt(updatedXp));
+      };
+      
+      window.addEventListener('storage', handleStorageChange);
+      return () => window.removeEventListener('storage', handleStorageChange);
+    }
+  }, [user]);
+
+  const xp = user ? (userData?.xp || 0) : localXp;
+  const level = Math.floor(xp / 100) + 1;
 
   return (
     <div className="fixed top-4 right-4 z-50 flex items-center gap-4 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-primary/20">
