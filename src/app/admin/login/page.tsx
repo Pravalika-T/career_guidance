@@ -13,15 +13,16 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuth, useUser, useDoc, useFirestore } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useAuth, useUser, useFirestore } from '@/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
+import { toast } from '@/hooks/use-toast';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -31,7 +32,6 @@ export default function AdminLoginPage() {
   
   const auth = useAuth();
   const router = useRouter();
-  const { user } = useUser();
   const db = useFirestore();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -40,12 +40,32 @@ export default function AdminLoginPage() {
     setError(null);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // The RootAdminLayout will handle redirection once the user state updates
-      router.push('/admin/dashboard');
+      // 1. Attempt Firebase Auth Login
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // 2. Immediately verify Admin Role in Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists() && userDoc.data().role === 'admin') {
+        toast({ title: "System Unlocked", description: "Administrator access granted." });
+        router.push('/admin/dashboard');
+      } else {
+        // Correct password, but missing the 'admin' role in Firestore
+        await signOut(auth); // Log them out immediately
+        setError("ACCESS DENIED: Your account is authenticated, but lacks the 'admin' role in the system database.");
+        console.warn('ADMIN ROLE MISSING:', user.uid);
+      }
     } catch (err: any) {
       console.error('Login error:', err);
-      setError(err.message || 'Invalid credentials. Please try again.');
+      let message = "Invalid credentials. Please try again.";
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        message = "Incorrect email or password.";
+      } else if (err.code === 'auth/too-many-requests') {
+        message = "Account temporarily locked due to many failed attempts. Try again later.";
+      }
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -86,7 +106,7 @@ export default function AdminLoginPage() {
             {error && (
               <Alert variant="destructive" className="mb-6 rounded-2xl border-none bg-rose-50 text-rose-600">
                 <AlertCircle className="h-4 w-4" />
-                <AlertTitle className="font-bold">Access Denied</AlertTitle>
+                <AlertTitle className="font-bold">Entry Restricted</AlertTitle>
                 <AlertDescription className="text-xs">{error}</AlertDescription>
               </Alert>
             )}
@@ -111,7 +131,7 @@ export default function AdminLoginPage() {
               <div className="space-y-2">
                 <div className="flex justify-between items-center px-1">
                   <Label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-slate-400">Password</Label>
-                  <button type="button" className="text-[10px] font-bold text-primary hover:underline">Forgot Access?</button>
+                  <button type="button" className="text-[10px] font-bold text-primary hover:underline">System Recovery</button>
                 </div>
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />

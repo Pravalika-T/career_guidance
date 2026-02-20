@@ -24,37 +24,40 @@ export default function RootAdminLayout({
   const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
+    // Only redirect if we are NOT on the login page
     if (!authLoading && !isLoginPage) {
       if (!user) {
         router.push('/admin/login');
       } else if (!docLoading) {
-        // Log UID to help user set up Firestore document manually if they are stuck
+        // If document check is finished and role is not admin, redirect
         if (!userData || userData.role !== 'admin') {
           console.warn('ADMIN ACCESS DENIED: User lacks admin role in Firestore.');
-          if (user) console.info('Please ensure a document exists at path: users/' + user.uid + ' with field { "role": "admin" }');
           router.push('/admin/login');
         }
       }
     }
   }, [user, userData, authLoading, docLoading, router, isLoginPage]);
 
+  // Always render login page content
   if (isLoginPage) {
     return <>{children}</>;
   }
 
-  if (authLoading || docLoading) {
+  // Show skeleton while verifying access
+  if (authLoading || (user && docLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="space-y-4 w-64 text-center">
           <Skeleton className="h-12 w-full rounded-2xl" />
-          <p className="text-muted-foreground animate-pulse">Verifying Admin Access...</p>
+          <p className="text-muted-foreground animate-pulse font-bold text-sm tracking-widest">VERIFYING PROTOCOLS...</p>
         </div>
       </div>
     );
   }
 
+  // Final check to prevent layout shift or rendering admin UI to unauthorized users
   if (!user || userData?.role !== 'admin') {
-    return null; // Redirect handled by useEffect
+    return null; 
   }
 
   return <AdminLayout>{children}</AdminLayout>;
