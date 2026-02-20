@@ -175,6 +175,64 @@ export const CAREER_PATHS: CareerPath[] = [
       { id: 'de', name: 'Data Engineer', matchReason: 'Handles the infrastructure that makes AI possible.' },
       { id: 'ml-ops', name: 'MLOps Engineer', matchReason: 'Focuses on the deployment and lifecycle of AI models.' }
     ]
+  },
+  {
+    id: 'data-scientist',
+    name: 'Data Scientist',
+    role: 'Extracts insights from complex data sets.',
+    eligibility: 'Bachelor\'s or Master\'s in Statistics, Math, or CS.',
+    skills: ['R', 'Python', 'Machine Learning', 'Stats'],
+    salary: '₹8L - ₹45L+',
+    domainId: 'tech',
+    description: 'Find hidden patterns and tell stories with data to drive impact.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    reality: {
+      pressure: 'moderate',
+      balance: 'flexible',
+      stability: 'stable'
+    },
+    primaryExam: {
+      name: 'IIT-JAM (Statistics)',
+      description: 'Entrance for Masters in Statistics at IITs.',
+      frequency: 'Annual',
+      eligibility: 'Bachelor\'s Degree'
+    },
+    alternativeExams: [
+      { name: 'CUET PG', description: 'Entrance for Central Universities.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+    ],
+    backupCareers: [
+      { id: 'swe', name: 'Software Engineer', matchReason: 'Both require strong logic and programming skills.' },
+      { id: 'bi', name: 'Business Intelligence Analyst', matchReason: 'Focuses on data-driven decision making.' }
+    ]
+  },
+  {
+    id: 'nurse',
+    name: 'Nurse Practitioner',
+    role: 'Provides advanced clinical nursing care.',
+    eligibility: 'B.Sc. Nursing + Specialized training.',
+    skills: ['Critical Care', 'Pharmacology', 'Patient Support'],
+    salary: '₹4L - ₹15L+',
+    domainId: 'health',
+    description: 'The heartbeat of healthcare, providing essential care and support.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
+    reality: {
+      pressure: 'high',
+      balance: 'structured',
+      stability: 'stable'
+    },
+    primaryExam: {
+      name: 'B.Sc. Nursing Entrance',
+      description: 'Standard entry for nursing colleges.',
+      frequency: 'Annual',
+      eligibility: '10+2 (Biology)'
+    },
+    alternativeExams: [
+      { name: 'AIIMS Nursing', description: 'Premier entrance for AIIMS nursing seats.', frequency: 'Annual', eligibility: '10+2' }
+    ],
+    backupCareers: [
+      { id: 'physio', name: 'Physiotherapist', matchReason: 'Involves direct patient rehabilitation and support.' },
+      { id: 'health-admin', name: 'Health Administrator', matchReason: 'Manages the delivery of care services.' }
+    ]
   }
 ];
 

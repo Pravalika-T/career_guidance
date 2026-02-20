@@ -3,13 +3,14 @@
 
 import { use, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CAREER_PATHS } from '@/lib/career-data';
+import { CAREER_PATHS, DOMAINS } from '@/lib/career-data';
 import { PathExplorer } from '@/components/career/PathExplorer';
 import { RealityExplorer } from '@/components/career/RealityExplorer';
 import { UserStats } from '@/components/gamification/UserStats';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Wallet, BrainCircuit, Target, Shield, Video, Sparkles, Info, Compass, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CareerDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -20,32 +21,43 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
   const [isRealityOpen, setIsRealityOpen] = useState(false);
   const [hasExploredReality, setHasExploredReality] = useState(false);
 
+  // Find related careers in the same domain, excluding current one
+  const relatedCareers = CAREER_PATHS
+    .filter(p => p.domainId === career.domainId && p.id !== career.id)
+    .slice(0, 3);
+  
+  // If we need more related careers, pull from others
+  const extraCareers = relatedCareers.length < 3 
+    ? CAREER_PATHS.filter(p => p.id !== career.id && !relatedCareers.find(r => r.id === p.id)).slice(0, 3 - relatedCareers.length)
+    : [];
+  
+  const finalRelated = [...relatedCareers, ...extraCareers];
+
   useEffect(() => {
-    // Show prompt after a delay to ensure user has scrolled a bit
     const timer = setTimeout(() => setShowRealityPrompt(true), 5000);
     return () => clearTimeout(timer);
   }, []);
 
   const handleRealityExplored = () => {
     setHasExploredReality(true);
-    // Add XP for reality exploration
     const currentXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
     localStorage.setItem('career_craft_xp', (currentXp + 75).toString());
-    // Trigger update in UserStats (via storage event or state management in a real app)
     window.dispatchEvent(new Event('storage'));
   };
 
+  const domain = DOMAINS.find(d => d.id === career.domainId);
+
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="min-h-screen bg-background pb-32">
       <UserStats />
       
       {/* Hero Header */}
       <div className="bg-primary pt-24 pb-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white to-transparent" />
         <div className="max-w-6xl mx-auto relative z-10">
-          <Link href="/recommendations" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors">
+          <Link href="/discovery" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors">
             <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Recommendations
+            Back to Discovery
           </Link>
           
           <motion.div
@@ -54,7 +66,7 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
           >
             <div className="flex items-center gap-4 mb-4">
               <Badge className="bg-white/20 hover:bg-white/30 text-white border-none py-1 px-4 text-sm rounded-full">
-                {career.domainId.toUpperCase()}
+                {domain?.name.toUpperCase() || career.domainId.toUpperCase()}
               </Badge>
               <div className="flex items-center text-yellow-300 gap-1">
                 <Shield className="w-4 h-4 fill-current" />
@@ -176,6 +188,53 @@ export default function CareerDetailPage({ params }: { params: Promise<{ id: str
               </p>
             </div>
           </motion.div>
+        </div>
+
+        {/* Related Careers Section */}
+        <div className="mt-32">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-12 h-12 rounded-2xl bg-accent/10 flex items-center justify-center text-accent">
+              <Compass className="w-6 h-6" />
+            </div>
+            <div>
+              <h2 className="text-3xl font-headline font-bold">Similar Path Branches</h2>
+              <p className="text-muted-foreground">If you like {career.name}, you might love exploring these too.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {finalRelated.map((path, idx) => (
+              <motion.div
+                key={path.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <Card className="h-full border-none shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 bg-white/60 backdrop-blur-md rounded-[32px] overflow-hidden group">
+                  <CardHeader className="pb-2">
+                    <Badge variant="secondary" className="w-fit mb-2 bg-primary/10 text-primary border-none">
+                      {DOMAINS.find(d => d.id === path.domainId)?.name || 'Career'}
+                    </Badge>
+                    <CardTitle className="text-2xl font-bold">{path.name}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">
+                      {path.description}
+                    </p>
+                  </CardContent>
+                  <CardFooter>
+                    <Link href={`/career/${path.id}`} className="w-full">
+                      <Button variant="ghost" className="w-full justify-between group-hover:bg-primary group-hover:text-white rounded-2xl transition-colors font-bold h-12">
+                        Explore Route
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
 
