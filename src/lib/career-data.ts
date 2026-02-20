@@ -56,7 +56,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹6L - ₹35L+',
     domainId: 'tech',
     description: 'Transform ideas into digital realities using code.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-A8G_4Cq0',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
     primaryExam: {
       name: 'JEE Mains & Advanced',
       description: 'The standard entry path for top engineering institutes.',
@@ -133,7 +133,7 @@ export const CAREER_PATHS: CareerPath[] = [
     salary: '₹12L - ₹60L+',
     domainId: 'tech',
     description: 'Design algorithms that think and learn like humans.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-A8G_4Cq0',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
     primaryExam: {
       name: 'GATE (CS/AI)',
       description: 'The standard path for Masters/PhD in top Indian research labs like IISc/IITs.',
