@@ -62,9 +62,15 @@ export default function AdminLoginPage() {
     } catch (err: any) {
       console.error('Login error:', err);
       let message = "Invalid credentials. Please try again.";
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+      
+      if (err.code === 'auth/invalid-api-key') {
+        message = "CRITICAL ERROR: The Firebase API Key in src/firebase/config.ts is invalid. Please update it with your real key from the Firebase Console.";
+      } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
         message = "Incorrect email or password.";
+      } else {
+        message = err.message || "An unexpected error occurred during login.";
       }
+      
       setError(message);
     } finally {
       setLoading(false);
