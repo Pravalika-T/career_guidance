@@ -147,91 +147,155 @@ export const CAREER_PATHS: CareerPath[] = [
     ]
   },
   {
-    id: 'ai-res',
-    name: 'AI Researcher',
-    role: 'Pushes the boundaries of machine intelligence.',
-    eligibility: 'PhD or Master\'s in AI/ML.',
-    skills: ['Mathematics', 'TensorFlow', 'Deep Learning'],
-    salary: '₹12L - ₹60L+',
-    domainId: 'tech',
-    description: 'Design algorithms that think and learn like humans.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    id: 'singer',
+    name: 'Professional Singer',
+    role: 'Vocal performer for studio recordings and live shows.',
+    eligibility: 'Training in Classical or Contemporary Music.',
+    skills: ['Vocal Control', 'Performance', 'Composition'],
+    salary: '₹3L - ₹50L+ (Project-based)',
+    domainId: 'arts',
+    description: 'Express emotions and stories through the power of your voice.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/2vS_6-A0GTo',
     reality: {
       pressure: 'moderate',
       balance: 'flexible',
-      stability: 'growing'
+      stability: 'variable'
     },
     primaryExam: {
-      name: 'GATE (CS/AI)',
-      description: 'The standard path for Masters/PhD in top Indian research labs like IISc/IITs.',
-      frequency: 'Annual',
-      eligibility: 'Engineering Degree'
+      name: 'Degree in Music / Trinity Certifications',
+      description: 'Formal academic degree or international certification levels.',
+      frequency: 'Bi-Annual',
+      eligibility: 'Open Entry'
     },
     alternativeExams: [
-      { name: 'TIFR GS', description: 'Entrance for Tata Institute of Fundamental Research.', frequency: 'Annual', eligibility: 'Bachelor\'s' },
-      { name: 'JEST', description: 'Joint Entrance Screening Test for research fellowships.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+      { name: 'Reality Show Auditions', description: 'Direct platform for mass exposure and talent discovery.', frequency: 'Annual', eligibility: 'Talent-based' },
+      { name: 'Private Academy Programs', description: 'Specialized vocal training from recognized music gurus.', frequency: 'Ongoing', eligibility: 'Open' }
     ],
     backupCareers: [
-      { id: 'de', name: 'Data Engineer', matchReason: 'Handles the infrastructure that makes AI possible.' },
-      { id: 'ml-ops', name: 'MLOps Engineer', matchReason: 'Focuses on the deployment and lifecycle of AI models.' }
+      { id: 'music-teacher', name: 'Music Educator', matchReason: 'Pass on your skills to the next generation in schools or private setups.' },
+      { id: 'sound-eng', name: 'Sound Engineer', matchReason: 'Work with the technical side of recording and audio production.' },
+      { id: 'voice-artist', name: 'Voice Over Artist', matchReason: 'Use your vocal versatility for ads, movies, and animations.' }
     ]
   },
   {
-    id: 'data-scientist',
-    name: 'Data Scientist',
-    role: 'Extracts insights from complex data sets.',
-    eligibility: 'Bachelor\'s or Master\'s in Statistics, Math, or CS.',
-    skills: ['R', 'Python', 'Machine Learning', 'Stats'],
-    salary: '₹8L - ₹45L+',
-    domainId: 'tech',
-    description: 'Find hidden patterns and tell stories with data to drive impact.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
+    id: 'dancer',
+    name: 'Professional Dancer',
+    role: 'Performs in films, theatre, or live stage productions.',
+    eligibility: 'Training in specific dance forms (Classical/Hip-Hop/Contemporary).',
+    skills: ['Rhythm', 'Flexibility', 'Stage Presence'],
+    salary: '₹3L - ₹20L+',
+    domainId: 'arts',
+    description: 'Tell stories through movement and rhythmic expression.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/7V-6yY2f4Y0',
     reality: {
-      pressure: 'moderate',
-      balance: 'flexible',
-      stability: 'stable'
+      pressure: 'high',
+      balance: 'demanding',
+      stability: 'variable'
     },
     primaryExam: {
-      name: 'IIT-JAM (Statistics)',
-      description: 'Entrance for Masters in Statistics at IITs.',
+      name: 'Bachelors in Performing Arts (BPA)',
+      description: 'Formal degree specializing in Dance from top universities.',
       frequency: 'Annual',
-      eligibility: 'Bachelor\'s Degree'
+      eligibility: '10+2'
     },
     alternativeExams: [
-      { name: 'CUET PG', description: 'Entrance for Central Universities.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+      { name: 'Dance Academy Certifications', description: 'Intensive short-term professional programs.', frequency: 'Ongoing', eligibility: 'Audition-based' },
+      { name: 'International Workshops', description: 'Gaining global exposure and networking with choreographers.', frequency: 'Ongoing', eligibility: 'Open' }
     ],
     backupCareers: [
-      { id: 'swe', name: 'Software Engineer', matchReason: 'Both require strong logic and programming skills.' },
-      { id: 'bi', name: 'Business Intelligence Analyst', matchReason: 'Focuses on data-driven decision making.' }
+      { id: 'choreographer', name: 'Choreographer', matchReason: 'Transition to creating and directing dance sequences for others.' },
+      { id: 'fitness-instr', name: 'Dance Fitness Instructor', matchReason: 'Use dance for health and wellness programs like Zumba.' },
+      { id: 'event-coord', name: 'Event Coordinator', matchReason: 'Plan and manage stage shows and cultural festivals.' }
     ]
   },
   {
-    id: 'nurse',
-    name: 'Nurse Practitioner',
-    role: 'Provides advanced clinical nursing care.',
-    eligibility: 'B.Sc. Nursing + Specialized training.',
-    skills: ['Critical Care', 'Pharmacology', 'Patient Support'],
-    salary: '₹4L - ₹15L+',
-    domainId: 'health',
-    description: 'The heartbeat of healthcare, providing essential care and support.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/JBty9sV7Omc',
+    id: 'accountant',
+    name: 'Chartered Accountant',
+    role: 'Expert in auditing, taxation, and financial accounting.',
+    eligibility: 'Cleared all levels of CA examination by ICAI.',
+    skills: ['Audit', 'Financial Analysis', 'Tax Laws'],
+    salary: '₹7L - ₹40L+',
+    domainId: 'business',
+    description: 'Ensure financial integrity and strategic growth for organizations.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-Y2Ff-V6Y',
     reality: {
       pressure: 'high',
       balance: 'structured',
       stability: 'stable'
     },
     primaryExam: {
-      name: 'B.Sc. Nursing Entrance',
-      description: 'Standard entry for nursing colleges.',
-      frequency: 'Annual',
-      eligibility: '10+2 (Biology)'
+      name: 'CA Foundation / Inter / Final',
+      description: 'The rigorous 3-level path conducted by the ICAI.',
+      frequency: 'Bi-Annual',
+      eligibility: '10+2 for Foundation'
     },
     alternativeExams: [
-      { name: 'AIIMS Nursing', description: 'Premier entrance for AIIMS nursing seats.', frequency: 'Annual', eligibility: '10+2' }
+      { name: 'ACCA (Global)', description: 'International recognition in finance and accounting.', frequency: 'Quarterly', eligibility: '10+2' },
+      { name: 'CMA', description: 'Focus on management accounting and cost strategy.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
     ],
     backupCareers: [
-      { id: 'physio', name: 'Physiotherapist', matchReason: 'Involves direct patient rehabilitation and support.' },
-      { id: 'health-admin', name: 'Health Administrator', matchReason: 'Manages the delivery of care services.' }
+      { id: 'fin-analyst', name: 'Financial Analyst', matchReason: 'Analyzes market trends and financial data for investment.' },
+      { id: 'tax-consult', name: 'Tax Consultant', matchReason: 'Specializes in advisory services for tax planning.' }
+    ]
+  },
+  {
+    id: 'teacher',
+    name: 'School Teacher',
+    role: 'Educates students in specific subjects at primary/secondary levels.',
+    eligibility: 'Bachelor\'s + B.Ed + TET Certification.',
+    skills: ['Patience', 'Subject Knowledge', 'Communication'],
+    salary: '₹3L - ₹12L+',
+    domainId: 'edu',
+    description: 'Shape the minds and characters of the future generation.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/nU-Y2Ff-V6Y',
+    reality: {
+      pressure: 'moderate',
+      balance: 'structured',
+      stability: 'stable'
+    },
+    primaryExam: {
+      name: 'CTET / State TET',
+      description: 'The mandatory qualifying exam for teaching in government schools.',
+      frequency: 'Annual',
+      eligibility: 'B.Ed / D.El.Ed'
+    },
+    alternativeExams: [
+      { name: 'B.Ed Entrance Exams', description: 'Gateways to premier teacher training colleges.', frequency: 'Annual', eligibility: 'Bachelor\'s' },
+      { name: 'Private School Panels', description: 'Direct interviews for prestigious private educational institutions.', frequency: 'Ongoing', eligibility: 'B.Ed' }
+    ],
+    backupCareers: [
+      { id: 'corp-trainer', name: 'Corporate Trainer', matchReason: 'Training adults in professional skills and soft skills.' },
+      { id: 'content-dev', name: 'EdTech Content Developer', matchReason: 'Create educational materials for digital learning platforms.' }
+    ]
+  },
+  {
+    id: 'designer',
+    name: 'Graphic Designer',
+    role: 'Creates visual concepts for branding and media.',
+    eligibility: 'Degree/Diploma in Design.',
+    skills: ['Photoshop', 'Typography', 'Branding'],
+    salary: '₹4L - ₹18L+',
+    domainId: 'arts',
+    description: 'Communicate ideas through visual storytelling and digital art.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/u_v_L07e59k',
+    reality: {
+      pressure: 'moderate',
+      balance: 'flexible',
+      stability: 'growing'
+    },
+    primaryExam: {
+      name: 'NID DAT / UCEED',
+      description: 'Entrance for India\'s top design institutes like NID and IITs.',
+      frequency: 'Annual',
+      eligibility: '10+2'
+    },
+    alternativeExams: [
+      { name: 'NIFT Entrance', description: 'Specialized in fashion and textile design.', frequency: 'Annual', eligibility: '10+2' },
+      { name: 'Portfolio Review', description: 'Direct entry into creative agencies based on design work.', frequency: 'Ongoing', eligibility: 'Open' }
+    ],
+    backupCareers: [
+      { id: 'ui-ux', name: 'UI/UX Designer', matchReason: 'Focuses on user experience and digital interface design.' },
+      { id: 'art-dir', name: 'Assistant Art Director', matchReason: 'Manages visual styles for films or advertising campaigns.' }
     ]
   }
 ];
@@ -239,5 +303,5 @@ export const CAREER_PATHS: CareerPath[] = [
 export const INTERESTS = [
   'Coding', 'Helping People', 'Solving Puzzles', 'Drawing', 'Gaming', 
   'Nature', 'Public Speaking', 'Math', 'Writing', 'Robotics', 'Space',
-  'Music', 'Photography', 'Management', 'Law', 'Biology', 'Flying'
+  'Music', 'Photography', 'Management', 'Law', 'Biology', 'Flying', 'Dancing', 'Teaching', 'Finance'
 ];
