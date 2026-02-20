@@ -37,6 +37,7 @@ export interface CareerDomain {
 export const DOMAINS: CareerDomain[] = [
   { id: 'tech', name: 'Technology', icon: 'Cpu', description: 'Building the digital future.' },
   { id: 'health', name: 'Healthcare', icon: 'Stethoscope', description: 'Caring for humanity.' },
+  { id: 'aviation', name: 'Aviation & Logistics', icon: 'Plane', description: 'Mastering the skies and global movement.' },
   { id: 'arts', name: 'Arts & Design', icon: 'Palette', description: 'Shaping visual experiences.' },
   { id: 'business', name: 'Business', icon: 'Briefcase', description: 'Managing markets and growth.' },
   { id: 'science', name: 'Pure Science', icon: 'Microscope', description: 'Unlocking the laws of nature.' },
@@ -98,6 +99,32 @@ export const CAREER_PATHS: CareerPath[] = [
     ]
   },
   {
+    id: 'pilot',
+    name: 'Commercial Pilot',
+    role: 'Operates commercial aircraft for airlines.',
+    eligibility: '10+2 with Physics and Maths + Commercial Pilot License (CPL).',
+    skills: ['Navigation', 'Meteorology', 'Quick Decision Making'],
+    salary: '₹10L - ₹80L+',
+    domainId: 'aviation',
+    description: 'Command the skies and connect the world through aviation.',
+    virtualExperienceUrl: 'https://www.youtube.com/embed/wrtFLhwu168',
+    primaryExam: {
+      name: 'IGRUA Entrance / Flying Club Entrances',
+      description: 'The standard entry for premier flight training institutes.',
+      frequency: 'Annual',
+      eligibility: '10+2 (Physics & Maths)'
+    },
+    alternativeExams: [
+      { name: 'NDA (Air Force)', description: 'Entrance for Indian Air Force pilot training.', frequency: 'Bi-Annual', eligibility: '10+2' },
+      { name: 'B.Sc. Aviation + CPL', description: 'Academic degree combined with private flight training.', frequency: 'Annual', eligibility: '10+2' }
+    ],
+    backupCareers: [
+      { id: 'atc', name: 'Air Traffic Controller', matchReason: 'Uses the same aviation knowledge and high-pressure coordination.' },
+      { id: 'cabin-crew', name: 'Cabin Crew / Ground Staff', matchReason: 'Involves aircraft operations and passenger safety.' },
+      { id: 'aero-eng', name: 'Aerospace Engineer', matchReason: 'Focuses on the technical side of how planes fly.' }
+    ]
+  },
+  {
     id: 'ai-res',
     name: 'AI Researcher',
     role: 'Pushes the boundaries of machine intelligence.',
@@ -127,5 +154,5 @@ export const CAREER_PATHS: CareerPath[] = [
 export const INTERESTS = [
   'Coding', 'Helping People', 'Solving Puzzles', 'Drawing', 'Gaming', 
   'Nature', 'Public Speaking', 'Math', 'Writing', 'Robotics', 'Space',
-  'Music', 'Photography', 'Management', 'Law', 'Biology'
+  'Music', 'Photography', 'Management', 'Law', 'Biology', 'Flying'
 ];
