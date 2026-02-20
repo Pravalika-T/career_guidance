@@ -99,121 +99,136 @@ export const CAREER_PATHS: CareerPath[] = [
     skills: ['Python', 'System Design', 'React'],
     salary: '₹6L - ₹45L+',
     domainId: 'tech',
-    description: 'Build the software that powers the world.',
-    virtualExperienceUrl: 'https://www.youtube.com/embed/D3SGKyBcUjA',
-    vrExperience: {
-      scenes: [
-        {
-          id: 'environment',
-          title: 'The Tech Studio',
-          description: 'Explore your creative workstation and collaborative zones.',
-          hotspots: [
-            { id: '1', label: 'Workstation', info: 'Dual-monitors and ergonomic setup.', x: 40, y: 50 }
-          ]
-        },
-        { id: 'responsibilities', title: 'Coding Flow', description: 'Experience building systems.', hotspots: [] },
-        { id: 'lifestyle', title: 'Agile Rhythm', description: 'Mix of quiet work and team syncs.', hotspots: [] }
-      ]
-    },
+    description: 'Build the software that powers the world through code.',
     reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
     primaryExam: { 
       name: 'JEE Advanced', 
-      description: 'Top IIT entrance.', 
+      description: 'The premier entrance for IITs.', 
       frequency: 'Annual', 
       eligibility: '12th Science',
       prepGuide: {
         subjects: [{ name: 'Physics', weightage: '33%' }, { name: 'Chemistry', weightage: '33%' }, { name: 'Math', weightage: '34%' }],
-        milestones: [{ title: 'Foundation', period: 'Class 11', description: 'Master core logic.' }],
-        resources: ['NCERT', 'HC Verma']
+        milestones: [{ title: 'Concept Building', period: 'Class 11', description: 'Deep dive into mechanics and calculus.' }],
+        resources: ['NCERT', 'Irodov', 'Cengage']
       }
     },
-    alternativeExams: [{ name: 'BITSAT', description: 'BITS Pilani entrance.', frequency: 'Annual', eligibility: '12th Science' }],
-    backupCareers: [{ id: 'da', name: 'Data Analyst', matchReason: 'Strong analytical overlap.' }],
+    alternativeExams: [{ name: 'BITSAT', description: 'Entrance for BITS Pilani.', frequency: 'Annual', eligibility: '12th Science' }],
+    backupCareers: [{ id: 'da', name: 'Data Analyst', matchReason: 'Analytical skills transfer perfectly.' }],
     simulation: []
   },
   {
-    id: 'ece',
-    name: 'Electronics Engineer',
-    role: 'Designs electronic circuits and systems.',
-    eligibility: 'B.Tech in ECE.',
-    skills: ['Circuit Design', 'VLSI', 'Embedded Systems'],
-    salary: '₹5L - ₹35L+',
-    domainId: 'eng',
-    description: 'Create the hardware foundations of modern communication.',
-    reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
-    primaryExam: { name: 'GATE', description: 'National level engineering test.', frequency: 'Annual', eligibility: 'Final year B.Tech' },
+    id: 'ds',
+    name: 'Data Scientist',
+    role: 'Analyzes data to find patterns.',
+    eligibility: 'Degree in Math, Stats, or CS.',
+    skills: ['Machine Learning', 'Statistics', 'R/Python'],
+    salary: '₹8L - ₹50L+',
+    domainId: 'tech',
+    description: 'Turn raw data into strategic insights using AI.',
+    reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
+    primaryExam: { name: 'CUET UG', description: 'Entrance for top central universities.', frequency: 'Annual', eligibility: '12th Grade' },
     alternativeExams: [],
-    backupCareers: [{ id: 'iot', name: 'IoT Specialist', matchReason: 'Hardware-software hybrid.' }],
-    simulation: []
-  },
-  {
-    id: 'eee',
-    name: 'Electrical Engineer',
-    role: 'Works with power generation and distribution.',
-    eligibility: 'B.Tech in Electrical Eng.',
-    skills: ['Power Systems', 'Control Systems', 'Renewables'],
-    salary: '₹4L - ₹30L+',
-    domainId: 'eng',
-    description: 'Power the cities and industries of tomorrow.',
-    reality: { pressure: 'moderate', balance: 'structured', stability: 'stable' },
-    primaryExam: { name: 'JEE Main', description: 'Common engineering entrance.', frequency: 'Twice Yearly', eligibility: '12th Science' },
-    alternativeExams: [],
-    backupCareers: [{ id: 're', name: 'Solar Consultant', matchReason: 'Focus on green energy.' }],
+    backupCareers: [{ id: 'ba', name: 'Business Analyst', matchReason: 'Domain knowledge overlap.' }],
     simulation: []
   },
   {
     id: 'doctor',
     name: 'General Physician',
-    role: 'Provides primary medical care.',
+    role: 'Primary healthcare provider.',
     eligibility: 'MBBS Degree.',
     skills: ['Diagnosis', 'Pathology', 'Empathy'],
     salary: '₹10L - ₹60L+',
     domainId: 'health',
-    description: 'The front line of healthcare, saving lives daily.',
+    description: 'The guardian of public health and wellbeing.',
     reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
     primaryExam: { 
       name: 'NEET UG', 
-      description: 'Standard medical entrance.', 
+      description: 'National Eligibility cum Entrance Test.', 
       frequency: 'Annual', 
       eligibility: '12th Biology',
       prepGuide: {
         subjects: [{ name: 'Biology', weightage: '50%' }, { name: 'Physics', weightage: '25%' }, { name: 'Chemistry', weightage: '25%' }],
-        milestones: [{ title: 'NCERT Mastery', period: 'Class 11-12', description: 'Biology NCERT is key.' }],
-        resources: ['NCERT Bio', 'Trueman\'s']
+        milestones: [{ title: 'NCERT Focus', period: '12 Months', description: 'Master every line of Biology NCERT.' }],
+        resources: ['NCERT Bio', 'MTG Fingertips']
       }
     },
     alternativeExams: [],
-    backupCareers: [{ id: 'pharma', name: 'Pharmacologist', matchReason: 'Medical research focus.' }],
+    backupCareers: [{ id: 'research', name: 'Medical Researcher', matchReason: 'Deep scientific background.' }],
     simulation: []
   },
   {
-    id: 'psychologist',
-    name: 'Clinical Psychologist',
-    role: 'Helps people manage mental health.',
-    eligibility: 'MA/M.Sc in Psychology + M.Phil.',
-    skills: ['Counseling', 'Behavioral Therapy', 'Active Listening'],
-    salary: '₹3L - ₹15L+',
-    domainId: 'health',
-    description: 'Guide people through their mental and emotional journeys.',
-    reality: { pressure: 'moderate', balance: 'flexible', stability: 'growing' },
-    primaryExam: { name: 'CUET PG', description: 'Entrance for MA programs.', frequency: 'Annual', eligibility: 'Bachelors' },
-    alternativeExams: [],
-    backupCareers: [{ id: 'hr', name: 'HR Manager', matchReason: 'People-centric skills.' }],
+    id: 'architect',
+    name: 'Architect',
+    role: 'Designs buildings and structures.',
+    eligibility: 'B.Arch Degree.',
+    skills: ['AutoCAD', 'Design Thinking', 'Sketching'],
+    salary: '₹4L - ₹25L+',
+    domainId: 'arts',
+    description: 'Merge art and engineering to shape the skyline.',
+    reality: { pressure: 'moderate', balance: 'structured', stability: 'stable' },
+    primaryExam: { name: 'NATA', description: 'National Aptitude Test in Architecture.', frequency: 'Annual', eligibility: '12th Grade' },
+    alternativeExams: [{ name: 'JEE Paper 2', description: 'Architecture entrance for NITs.', frequency: 'Annual', eligibility: '12th Science' }],
+    backupCareers: [{ id: 'id', name: 'Interior Designer', matchReason: 'Spatial design core.' }],
+    simulation: []
+  },
+  {
+    id: 'lawyer',
+    name: 'Corporate Lawyer',
+    role: 'Advises companies on legal matters.',
+    eligibility: 'LLB or Integrated LLM.',
+    skills: ['Research', 'Negotiation', 'Ethics'],
+    salary: '₹12L - ₹70L+',
+    domainId: 'law',
+    description: 'Navigate the complex legal frameworks of global business.',
+    reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
+    primaryExam: { name: 'CLAT', description: 'Common Law Admission Test.', frequency: 'Annual', eligibility: '12th Grade' },
+    alternativeExams: [{ name: 'AILET', description: 'NLU Delhi entrance.', frequency: 'Annual', eligibility: '12th Grade' }],
+    backupCareers: [{ id: 'cs', name: 'Company Secretary', matchReason: 'Compliance and legal focus.' }],
     simulation: []
   },
   {
     id: 'pilot',
     name: 'Commercial Pilot',
-    role: 'Operates commercial aircraft.',
+    role: 'Flies commercial aircraft.',
     eligibility: '12th Science + CPL.',
-    skills: ['Navigation', 'Aviation Safety', 'Meteorology'],
-    salary: '₹12L - ₹85L+',
+    skills: ['Navigation', 'Discipline', 'Physics'],
+    salary: '₹15L - ₹90L+',
     domainId: 'aviation',
-    description: 'Take command of the flight deck and navigate the skies.',
+    description: 'Master flight dynamics and explore the world from the sky.',
     reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
-    primaryExam: { name: 'IGRUA Entrance', description: 'Premier flight academy test.', frequency: 'Annual', eligibility: '12th Science' },
+    primaryExam: { name: 'DGCA Exams', description: 'Theoretical exams for pilot licensing.', frequency: 'Quarterly', eligibility: '12th Science' },
     alternativeExams: [],
-    backupCareers: [{ id: 'atc', name: 'ATC', matchReason: 'Aviation coordination.' }],
+    backupCareers: [{ id: 'ops', name: 'Flight Operations', matchReason: 'Aviation ecosystem knowledge.' }],
+    simulation: []
+  },
+  {
+    id: 'chef',
+    name: 'Executive Chef',
+    role: 'Manages professional kitchens.',
+    eligibility: 'Degree in Hotel Management.',
+    skills: ['Culinary Arts', 'Leadership', 'Creativity'],
+    salary: '₹3L - ₹20L+',
+    domainId: 'arts',
+    description: 'Combine passion and precision to create world-class cuisine.',
+    reality: { pressure: 'high', balance: 'demanding', stability: 'variable' },
+    primaryExam: { name: 'NCHMCT JEE', description: 'Hotel Management entrance.', frequency: 'Annual', eligibility: '12th Grade' },
+    alternativeExams: [],
+    backupCareers: [{ id: 'fnb', name: 'F&B Manager', matchReason: 'Hospitality management core.' }],
+    simulation: []
+  },
+  {
+    id: 'ece',
+    name: 'Electronics Engineer',
+    role: 'Designs hardware circuits.',
+    eligibility: 'B.Tech in ECE.',
+    skills: ['Circuit Design', 'IoT', 'Robotics'],
+    salary: '₹5L - ₹35L+',
+    domainId: 'eng',
+    description: 'Develop the chips and circuits that power the future.',
+    reality: { pressure: 'moderate', balance: 'structured', stability: 'stable' },
+    primaryExam: { name: 'JEE Main', description: 'Standard engineering entrance.', frequency: 'Twice Annual', eligibility: '12th Science' },
+    alternativeExams: [],
+    backupCareers: [{ id: 'embedded', name: 'Embedded Systems Dev', matchReason: 'Hardware-software hybrid.' }],
     simulation: []
   }
 ];
@@ -221,5 +236,5 @@ export const CAREER_PATHS: CareerPath[] = [
 export const INTERESTS = [
   'Coding', 'Helping People', 'Solving Puzzles', 'Drawing', 'Gaming', 
   'Nature', 'Public Speaking', 'Math', 'Writing', 'Robotics', 'Space',
-  'Music', 'Photography', 'Management', 'Law', 'Biology', 'Flying', 'Dancing', 'Teaching', 'Finance'
+  'Cooking', 'Law', 'Biology', 'Flying', 'Designing Buildings', 'Teaching', 'Money'
 ];
