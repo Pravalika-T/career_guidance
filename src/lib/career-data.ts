@@ -51,7 +51,7 @@ export const CAREER_PATHS: CareerPath[] = [
     role: 'Develops applications and systems.',
     eligibility: 'Bachelor\'s in Computer Science or related field.',
     skills: ['Python', 'Problem Solving', 'System Design'],
-    salary: '$80k - $200k',
+    salary: '₹6L - ₹35L+',
     domainId: 'tech',
     description: 'Transform ideas into digital realities using code.',
     primaryExam: {
@@ -73,23 +73,23 @@ export const CAREER_PATHS: CareerPath[] = [
     id: 'doctor',
     name: 'Doctor',
     role: 'Specializes in clinical health and medicine.',
-    eligibility: 'MD Degree + Residency.',
+    eligibility: 'MBBS + MD/MS Degree.',
     skills: ['Surgery', 'Diagnosis', 'Patient Care'],
-    salary: '$250k - $600k',
+    salary: '₹8L - ₹50L+',
     domainId: 'health',
-    description: 'Treat complex heart conditions and save lives.',
+    description: 'Treat complex conditions and save lives through clinical excellence.',
     primaryExam: {
       name: 'NEET UG',
-      description: 'The primary gateway to medical school (MBBS).',
+      description: 'The primary gateway to medical school (MBBS) in India.',
       frequency: 'Annual',
       eligibility: 'High School (Biology Stream)'
     },
     alternativeExams: [
       { name: 'State Medical Entrances', description: 'Alternative state-level government medical seats.', frequency: 'Annual', eligibility: 'High School' },
-      { name: 'Private Univ Tests', description: 'Specific exams for renowned private medical colleges.', frequency: 'Annual', eligibility: 'High School' }
+      { name: 'AIIMS / JIPMER (via NEET)', description: 'Entrance for India\'s premier medical institutes.', frequency: 'Annual', eligibility: 'High School' }
     ],
     backupCareers: [
-      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through movement.' },
+      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' },
       { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' },
       { id: 'nursing', name: 'Nursing Specialist', matchReason: 'Critical frontline healthcare and direct patient interaction.' }
     ]
@@ -100,17 +100,18 @@ export const CAREER_PATHS: CareerPath[] = [
     role: 'Pushes the boundaries of machine intelligence.',
     eligibility: 'PhD or Master\'s in AI/ML.',
     skills: ['Mathematics', 'TensorFlow', 'Deep Learning'],
-    salary: '$120k - $350k',
+    salary: '₹12L - ₹60L+',
     domainId: 'tech',
     description: 'Design algorithms that think and learn like humans.',
     primaryExam: {
       name: 'GATE (CS/AI)',
-      description: 'The standard path for Masters/PhD in top Research Labs.',
+      description: 'The standard path for Masters/PhD in top Indian research labs like IISc/IITs.',
       frequency: 'Annual',
       eligibility: 'Engineering Degree'
     },
     alternativeExams: [
-      { name: 'University Specific Tests', description: 'Research-focused entrances for specialized AI labs.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
+      { name: 'TIFR GS', description: 'Entrance for Tata Institute of Fundamental Research.', frequency: 'Annual', eligibility: 'Bachelor\'s' },
+      { name: 'JEST', description: 'Joint Entrance Screening Test for research fellowships.', frequency: 'Annual', eligibility: 'Bachelor\'s' }
     ],
     backupCareers: [
       { id: 'de', name: 'Data Engineer', matchReason: 'Handles the infrastructure that makes AI possible.' },
