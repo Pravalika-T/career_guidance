@@ -106,16 +106,63 @@ export const CAREER_PATHS: CareerPath[] = [
           { label: "Check logs", description: "Look at the server logs to see the specific error.", isCorrect: true, feedback: "Perfect. Data-driven debugging saves hours of work." },
           { label: "Blame the internet", description: "Tell the user their connection is bad.", isCorrect: false, feedback: "Not very helpful. We must ensure our app is resilient." }
         ]
-      },
-      {
-        id: 'swe-2',
-        task: "The team is debating between a fast solution that might crash later vs a slower, stable one. You choose?",
-        options: [
-          { label: "Speed first", description: "Launch now, fix later.", isCorrect: false, feedback: "This creates 'technical debt' which can hurt the project later." },
-          { label: "Stability first", description: "Build it right, even if it takes more time.", isCorrect: true, feedback: "Great! Quality and reliability are the hallmarks of a pro engineer." }
-        ]
       }
     ]
+  },
+  {
+    id: 'architect',
+    name: 'Architect',
+    role: 'Designs and plans buildings and structures.',
+    eligibility: 'Bachelor of Architecture (B.Arch).',
+    skills: ['AutoCAD', 'Sketching', 'Spatial Design'],
+    salary: '₹4L - ₹25L+',
+    domainId: 'eng',
+    description: 'Blend art and engineering to shape the skyline.',
+    reality: { pressure: 'high', balance: 'structured', stability: 'stable' },
+    primaryExam: { name: 'NATA', description: 'National Aptitude Test in Architecture.', frequency: 'Annual', eligibility: '12th (Physics, Chem, Math)' },
+    alternativeExams: [
+      { name: 'JEE Paper 2', description: 'Entrance for B.Arch in NITs and SPAs.', frequency: 'Annual', eligibility: '12th' }
+    ],
+    backupCareers: [
+      { id: 'int-des', name: 'Interior Designer', matchReason: 'Focuses on the aesthetics and function of indoor spaces.' }
+    ],
+    simulation: []
+  },
+  {
+    id: 'lawyer',
+    name: 'Corporate Lawyer',
+    role: 'Advises businesses on legal rights and obligations.',
+    eligibility: 'Integrated LLB (5 years) or LLB (3 years).',
+    skills: ['Critical Thinking', 'Negotiation', 'Research'],
+    salary: '₹8L - ₹40L+',
+    domainId: 'law',
+    description: 'Navigate the complex world of corporate regulations and justice.',
+    reality: { pressure: 'high', balance: 'demanding', stability: 'stable' },
+    primaryExam: { name: 'CLAT', description: 'Common Law Admission Test for National Law Universities.', frequency: 'Annual', eligibility: '12th' },
+    alternativeExams: [
+      { name: 'AILET', description: 'Entrance for National Law University, Delhi.', frequency: 'Annual', eligibility: '12th' }
+    ],
+    backupCareers: [
+      { id: 'legal-analyst', name: 'Legal Analyst', matchReason: 'Involves intensive research and documentation support.' }
+    ],
+    simulation: []
+  },
+  {
+    id: 'chef',
+    name: 'Executive Chef',
+    role: 'Manages kitchen operations and creates culinary masterpieces.',
+    eligibility: 'Degree/Diploma in Hotel Management.',
+    skills: ['Culinary Arts', 'Leadership', 'Creativity'],
+    salary: '₹5L - ₹30L+',
+    domainId: 'arts',
+    description: 'Transform ingredients into unforgettable sensory experiences.',
+    reality: { pressure: 'high', balance: 'demanding', stability: 'variable' },
+    primaryExam: { name: 'NCHMCT JEE', description: 'Entrance for top Institute of Hotel Management (IHM) branches.', frequency: 'Annual', eligibility: '12th' },
+    alternativeExams: [],
+    backupCareers: [
+      { id: 'food-stylist', name: 'Food Stylist', matchReason: 'Focuses on the visual presentation of food for media.' }
+    ],
+    simulation: []
   },
   {
     id: 'doctor',
@@ -139,31 +186,12 @@ export const CAREER_PATHS: CareerPath[] = [
       eligibility: 'High School (Biology Stream)'
     },
     alternativeExams: [
-      { name: 'State Medical Entrances', description: 'Alternative state-level government medical seats.', frequency: 'Annual', eligibility: 'High School' },
-      { name: 'AIIMS / JIPMER (via NEET)', description: 'Entrance for India\'s premier medical institutes.', frequency: 'Annual', eligibility: 'High School' }
+      { name: 'State Medical Entrances', description: 'Alternative state-level government medical seats.', frequency: 'Annual', eligibility: 'High School' }
     ],
     backupCareers: [
-      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' },
-      { id: 'bio-sci', name: 'Biomedical Scientist', matchReason: 'Focuses on the science behind healthcare and lab research.' }
+      { id: 'physio', name: 'Physiotherapist', matchReason: 'Allows you to heal and help patients through physical therapy.' }
     ],
-    simulation: [
-      {
-        id: 'doc-1',
-        task: "A patient comes in with a high fever and a cough. They are worried. How do you start?",
-        options: [
-          { label: "Listen carefully", description: "Ask them to describe their symptoms in detail.", isCorrect: true, feedback: "Excellent. Empathy and listening are 50% of the cure." },
-          { label: "Order all tests", description: "Send them for MRI and Blood tests immediately.", isCorrect: false, feedback: "Tests are expensive. Start with a physical checkup and history first." }
-        ]
-      },
-      {
-        id: 'doc-2',
-        task: "It's the end of a long 12-hour shift, but an emergency case just arrived. What do you do?",
-        options: [
-          { label: "Stay and help", description: "Your energy is low, but the patient needs you.", isCorrect: true, feedback: "Medicine is a calling. Resilience is key, though self-care is also vital later." },
-          { label: "Go home", description: "Shift is over, someone else will handle it.", isCorrect: false, feedback: "In emergencies, every hand counts. Doctors often go above and beyond." }
-        ]
-      }
-    ]
+    simulation: []
   },
   {
     id: 'pilot',
@@ -181,27 +209,16 @@ export const CAREER_PATHS: CareerPath[] = [
       stability: 'stable'
     },
     primaryExam: {
-      name: 'IGRUA Entrance / Flying Club Entrances',
+      name: 'IGRUA Entrance',
       description: 'The standard entry for premier flight training institutes.',
       frequency: 'Annual',
       eligibility: '10+2 (Physics & Maths)'
     },
-    alternativeExams: [
-      { name: 'NDA (Air Force)', description: 'Entrance for Indian Air Force pilot training.', frequency: 'Bi-Annual', eligibility: '10+2' }
-    ],
+    alternativeExams: [],
     backupCareers: [
       { id: 'atc', name: 'Air Traffic Controller', matchReason: 'Uses the same aviation knowledge and high-pressure coordination.' }
     ],
-    simulation: [
-      {
-        id: 'pilot-1',
-        task: "Mid-flight, you encounter unexpected heavy turbulence. Your passengers are getting scared.",
-        options: [
-          { label: "Calm announcement", description: "Explain the situation and reassure them.", isCorrect: true, feedback: "Great leadership. Communication prevents panic." },
-          { label: "Ignore it", description: "Just focus on the controls.", isCorrect: false, feedback: "Passengers look to the cockpit for reassurance during bumpy rides." }
-        ]
-      }
-    ]
+    simulation: []
   },
   {
     id: 'singer',
@@ -219,27 +236,16 @@ export const CAREER_PATHS: CareerPath[] = [
       stability: 'variable'
     },
     primaryExam: {
-      name: 'Degree in Music / Trinity Certifications',
-      description: 'Formal academic degree or international certification levels.',
+      name: 'Trinity Certifications',
+      description: 'International certification levels in music.',
       frequency: 'Bi-Annual',
       eligibility: 'Open Entry'
     },
-    alternativeExams: [
-      { name: 'Reality Show Auditions', description: 'Direct platform for mass exposure and talent discovery.', frequency: 'Annual', eligibility: 'Talent-based' }
-    ],
+    alternativeExams: [],
     backupCareers: [
       { id: 'music-teacher', name: 'Music Educator', matchReason: 'Pass on your skills to the next generation.' }
     ],
-    simulation: [
-      {
-        id: 'singer-1',
-        task: "You're recording a new song and the producer asks you to change your style slightly. How do you respond?",
-        options: [
-          { label: "Collaborate", description: "Try the new style and see how it sounds.", isCorrect: true, feedback: "Collaboration is huge in the arts. Flexibility helps you grow." },
-          { label: "Refuse", description: "My style is my identity, I won't change.", isCorrect: false, feedback: "Growth often happens when we step out of our comfort zone." }
-        ]
-      }
-    ]
+    simulation: []
   }
 ];
 
