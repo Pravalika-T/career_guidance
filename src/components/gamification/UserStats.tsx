@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -16,31 +15,38 @@ export function UserStats() {
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef);
 
+  // Initial local XP load
   useEffect(() => {
     const savedXp = localStorage.getItem('career_craft_xp');
     if (savedXp) setLocalXp(parseInt(savedXp));
+  }, []);
 
-    const handleStorageChange = () => {
+  // Sync Local XP to Cloud XP on Login or Update
+  useEffect(() => {
+    const handleStorageChange = async () => {
       const updatedXp = localStorage.getItem('career_craft_xp');
       if (updatedXp) {
         const xpNum = parseInt(updatedXp);
         setLocalXp(xpNum);
         
-        // Sync to Firestore if user is logged in
         if (user && db) {
-          setDoc(doc(db, 'users', user.uid), {
-            uid: user.uid,
-            displayName: user.displayName,
-            xp: xpNum,
-            lastActive: serverTimestamp()
-          }, { merge: true });
+          // Only update if cloud XP is lower than local (to prevent overwriting higher cloud stats)
+          if (!userData || (userData.xp || 0) < xpNum) {
+            await setDoc(doc(db, 'users', user.uid), {
+              xp: xpNum,
+              lastActive: serverTimestamp()
+            }, { merge: true });
+          }
         }
       }
     };
 
     window.addEventListener('storage', handleStorageChange);
+    // Trigger once on login/mount to sync
+    handleStorageChange();
+    
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [user, db]);
+  }, [user, db, userData]);
 
   const xp = user ? (userData?.xp || localXp) : localXp;
   const level = Math.floor(xp / 100) + 1;

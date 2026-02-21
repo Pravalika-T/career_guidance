@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -46,6 +45,9 @@ export default function LoginPage() {
       const userRef = doc(db, 'users', user.uid);
       const userSnap = await getDoc(userRef);
       
+      // Get local XP to merge on first login
+      const localXp = parseInt(localStorage.getItem('career_craft_xp') || '0');
+      
       if (!userSnap.exists()) {
         await setDoc(userRef, {
           uid: user.uid,
@@ -53,8 +55,8 @@ export default function LoginPage() {
           email: user.email,
           photoURL: user.photoURL || '',
           role: 'user',
-          xp: 0,
-          level: 1,
+          xp: localXp,
+          level: Math.floor(localXp / 100) + 1,
           badges: ['Path Explorer'],
           savedCareers: [],
           lastActive: serverTimestamp()
@@ -74,7 +76,13 @@ export default function LoginPage() {
       toast({ title: "Welcome back!", description: "Accessing your career map." });
       router.push('/profile');
     } catch (err: any) {
-      toast({ variant: "destructive", title: "Login Failed", description: err.message });
+      toast({ 
+        variant: "destructive", 
+        title: "Login Failed", 
+        description: err.code === 'auth/invalid-api-key' 
+          ? "CRITICAL: The API Key in src/firebase/config.ts is placeholder. Update it to your real key." 
+          : err.message 
+      });
     } finally {
       setLoading(false);
     }
@@ -156,7 +164,7 @@ export default function LoginPage() {
                         required 
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="h-12 pl-11 rounded-2xl bg-white border-none shadow-inner"
+                        className="h-12 pl-11 rounded-2xl bg-white border-none shadow-inner focus-visible:ring-primary/20"
                       />
                     </div>
                   </div>
@@ -170,11 +178,11 @@ export default function LoginPage() {
                         required 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="h-12 pl-11 rounded-2xl bg-white border-none shadow-inner"
+                        className="h-12 pl-11 rounded-2xl bg-white border-none shadow-inner focus-visible:ring-primary/20"
                       />
                     </div>
                   </div>
-                  <Button disabled={loading} className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/20">
+                  <Button disabled={loading} className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold text-lg shadow-xl shadow-primary/20 transition-all">
                     {loading ? <Loader2 className="animate-spin" /> : 'Enter Your World'}
                   </Button>
                 </form>
@@ -189,7 +197,7 @@ export default function LoginPage() {
                       required 
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="h-12 rounded-2xl bg-white border-none shadow-inner"
+                      className="h-12 rounded-2xl bg-white border-none shadow-inner focus-visible:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -200,7 +208,7 @@ export default function LoginPage() {
                       required 
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="h-12 rounded-2xl bg-white border-none shadow-inner"
+                      className="h-12 rounded-2xl bg-white border-none shadow-inner focus-visible:ring-primary/20"
                     />
                   </div>
                   <div className="space-y-2">
@@ -211,10 +219,10 @@ export default function LoginPage() {
                       required 
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="h-12 rounded-2xl bg-white border-none shadow-inner"
+                      className="h-12 rounded-2xl bg-white border-none shadow-inner focus-visible:ring-primary/20"
                     />
                   </div>
-                  <Button disabled={loading} className="w-full h-14 rounded-2xl bg-accent hover:bg-accent/90 text-white font-bold text-lg shadow-xl shadow-accent/20">
+                  <Button disabled={loading} className="w-full h-14 rounded-2xl bg-accent hover:bg-accent/90 text-white font-bold text-lg shadow-xl shadow-accent/20 transition-all">
                     {loading ? <Loader2 className="animate-spin" /> : 'Create Account'}
                   </Button>
                 </form>
@@ -223,14 +231,14 @@ export default function LoginPage() {
               <div className="mt-8">
                 <div className="relative mb-8">
                   <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-muted-foreground/10"></div></div>
-                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-transparent px-2 text-muted-foreground font-bold">Or</span></div>
+                  <div className="relative flex justify-center text-xs uppercase"><span className="bg-white px-2 text-muted-foreground font-bold">Or</span></div>
                 </div>
 
                 <Button 
                   onClick={handleGoogleLogin}
                   variant="outline" 
                   disabled={loading}
-                  className="w-full h-14 rounded-2xl border-none bg-white shadow-xl flex items-center justify-center gap-3 font-bold hover:bg-slate-50"
+                  className="w-full h-14 rounded-2xl border-none bg-white shadow-xl flex items-center justify-center gap-3 font-bold hover:bg-slate-50 transition-all"
                 >
                   <Chrome className="w-5 h-5" />
                   Continue with Google
