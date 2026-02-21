@@ -12,7 +12,9 @@ import {
   Clock,
   Sparkles,
   MapIcon,
-  Loader2
+  Loader2,
+  Activity,
+  Trophy
 } from 'lucide-react';
 import { 
   XAxis, 
@@ -30,6 +32,7 @@ import { useCollection, useFirestore } from '@/firebase';
 import { collection, query, orderBy, limit } from 'firebase/firestore';
 import { useMemo } from 'react';
 import { CAREER_PATHS } from '@/lib/career-data';
+import Link from 'next/link';
 
 const chartData = [
   { name: 'Mon', users: 400, recommendations: 240 },
@@ -43,30 +46,40 @@ const chartData = [
 
 export default function AdminDashboardPage() {
   const db = useFirestore();
-  const { data: users, loading } = useCollection(query(collection(db, 'users'), orderBy('lastActive', 'desc')));
+  const usersQuery = useMemo(() => query(collection(db, 'users'), orderBy('lastActive', 'desc'), limit(50)), [db]);
+  const { data: users, loading } = useCollection(usersQuery);
   
   const stats = useMemo(() => {
-    if (!users) return { total: 0, avgXp: 0, savedPaths: 0 };
+    if (!users) return { total: 0, avgXp: 0, totalSaved: 0, activeToday: 0 };
     const total = users.length;
     const totalXp = users.reduce((acc, u) => acc + (u.xp || 0), 0);
-    const savedPaths = users.reduce((acc, u) => acc + (u.savedCareers?.length || 0), 0);
+    const totalSaved = users.reduce((acc, u) => acc + (u.savedCareers?.length || 0), 0);
     return {
       total,
       avgXp: total > 0 ? Math.floor(totalXp / total) : 0,
-      savedPaths
+      totalSaved,
+      activeToday: Math.floor(total * 0.4) // Simulated for dashboard vibrancy
     };
   }, [users]);
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-end">
+    <div className="space-y-8 pb-20">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">System Command</h1>
-          <p className="text-slate-500 font-medium">Real-time engagement metrics for CareerCraft 3D.</p>
+          <p className="text-slate-500 font-medium">Monitoring explorer progress and app infrastructure.</p>
         </div>
-        <div className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-2xl flex items-center gap-2 border border-emerald-100 shadow-sm animate-pulse">
-          <div className="w-2 h-2 rounded-full bg-emerald-500" />
-          <span className="text-xs font-bold uppercase tracking-widest">Live System Feed</span>
+        <div className="flex gap-3">
+          <Link href="/admin/careers">
+            <Button variant="outline" className="h-12 rounded-2xl border-slate-200 bg-white shadow-sm font-bold">
+              <Briefcase className="w-4 h-4 mr-2" />
+              Manage Library
+            </Button>
+          </Link>
+          <div className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-2xl flex items-center gap-2 border border-emerald-100 shadow-sm">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">System Online</span>
+          </div>
         </div>
       </div>
 
@@ -74,9 +87,9 @@ export default function AdminDashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Total Explorers', val: loading ? '...' : stats.total.toLocaleString(), icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', trend: '+12%', up: true },
-          { label: 'Library Size', val: CAREER_PATHS.length.toString(), icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-100', trend: '+4', up: true },
-          { label: 'Avg. Player XP', val: loading ? '...' : stats.avgXp.toLocaleString(), icon: Zap, color: 'text-amber-600', bg: 'bg-amber-100', trend: '+5%', up: true },
-          { label: 'Active Career Maps', val: loading ? '...' : stats.savedPaths.toLocaleString(), icon: MapIcon, color: 'text-purple-600', bg: 'bg-purple-100', trend: '+8%', up: true },
+          { label: 'Library Size', val: CAREER_PATHS.length.toString(), icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-100', trend: 'Live', up: true },
+          { label: 'Avg. Progress', val: loading ? '...' : stats.avgXp.toLocaleString() + ' XP', icon: Zap, color: 'text-amber-600', bg: 'bg-amber-100', trend: '+5%', up: true },
+          { label: 'Routes Mapped', val: loading ? '...' : stats.totalSaved.toLocaleString(), icon: MapIcon, color: 'text-purple-600', bg: 'bg-purple-100', trend: '+8%', up: true },
         ].map((stat, i) => (
           <Card key={i} className="border-none shadow-sm rounded-[32px] overflow-hidden group hover:shadow-xl transition-all duration-500 bg-white">
             <CardContent className="p-8">
@@ -96,23 +109,19 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Charts Row */}
+      {/* Charts & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 border-none shadow-sm rounded-[40px] overflow-hidden bg-white">
           <CardHeader className="p-10 pb-0">
             <div className="flex justify-between items-center">
               <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">Engagement Trends</CardTitle>
-                <p className="text-slate-400 text-sm mt-1">Growth trajectories across discovery layers.</p>
-              </div>
-              <div className="flex gap-2">
-                <Badge variant="outline" className="rounded-full px-4 border-slate-200">Active Users</Badge>
-                <Badge variant="default" className="rounded-full px-4 bg-slate-900">Map Saves</Badge>
+                <CardTitle className="text-2xl font-bold text-slate-900">User Growth & Engagement</CardTitle>
+                <p className="text-slate-400 text-sm mt-1">Growth trajectories across all career discovery layers.</p>
               </div>
             </div>
           </CardHeader>
           <CardContent className="p-10 pt-8">
-            <div className="h-[380px] w-full">
+            <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
@@ -135,12 +144,11 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Activity Feed */}
         <Card className="border-none shadow-sm rounded-[40px] overflow-hidden bg-white">
           <CardHeader className="p-10 pb-4">
             <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-900">
-              <Clock className="w-6 h-6 text-primary" />
-              Live Activity
+              <Activity className="w-6 h-6 text-primary" />
+              Recent Activity
             </CardTitle>
           </CardHeader>
           <CardContent className="px-10 pb-10">
@@ -148,55 +156,32 @@ export default function AdminDashboardPage() {
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-4">
                   <Loader2 className="animate-spin" />
-                  <p className="font-bold text-xs uppercase tracking-widest">Streaming Feed...</p>
+                  <p className="font-bold text-xs uppercase tracking-widest text-center">Streaming Registry...</p>
                 </div>
-              ) : users.slice(0, 5).map((activity, i) => (
+              ) : users?.slice(0, 6).map((activity, i) => (
                 <div key={i} className="flex gap-5 group cursor-default">
                   <div className={`w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-all shadow-sm`}>
-                    {activity.xp > 500 ? <Trophy className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
+                    {activity.xp > 500 ? <Trophy className="w-5 h-5 text-amber-500 group-hover:text-white" /> : <Sparkles className="w-5 h-5" />}
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">
-                      {activity.displayName || 'Explorer'} <span className="font-medium text-slate-400">logged a session</span>
+                  <div className="flex-1 overflow-hidden">
+                    <p className="text-sm font-bold text-slate-900 truncate">
+                      {activity.displayName || 'Explorer'}
                     </p>
-                    <p className="text-xs text-slate-400 mt-1 flex items-center gap-2">
-                      <Zap size={10} className="text-amber-500 fill-amber-500" />
+                    <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-2 font-bold uppercase tracking-wider">
                       Lvl {Math.floor((activity.xp || 0) / 100) + 1} • {activity.xp || 0} XP
                     </p>
                   </div>
                 </div>
               ))}
             </div>
-            <Button variant="outline" className="w-full mt-10 h-12 rounded-2xl font-bold text-slate-500 border-slate-100 hover:bg-slate-50">
-              Full System Audit Log
-            </Button>
+            <Link href="/admin/users">
+              <Button variant="outline" className="w-full mt-10 h-12 rounded-2xl font-bold text-slate-500 border-slate-100 hover:bg-slate-50">
+                View All Explorers
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
-}
-
-function Trophy({ className, size }: { className?: string, size?: number }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size || 24} 
-      height={size || 24} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-      <path d="M4 22h16" />
-      <path d="M10 22V18" />
-      <path d="M14 22V18" />
-      <path d="M18 4H6v7a6 6 0 0 0 12 0V4Z" />
-    </svg>
   );
 }

@@ -8,12 +8,12 @@ import {
   MoreHorizontal, 
   Mail, 
   Shield, 
-  UserCheck, 
-  UserX,
   History,
   Download,
   Loader2,
-  MapIcon
+  MapIcon,
+  Zap,
+  ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,12 +47,12 @@ export default function UserManagementPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Explorer Directory</h1>
+          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Explorer Registry</h1>
           <p className="text-slate-500 font-medium">Monitoring growth and engagement for {users?.length || 0} students.</p>
         </div>
         <Button className="h-14 px-10 rounded-3xl bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 font-bold shadow-sm transition-all">
           <Download className="w-5 h-5 mr-3" />
-          Export Global Stats
+          Export Data
         </Button>
       </div>
 
@@ -68,7 +68,7 @@ export default function UserManagementPage() {
         </div>
         <Button variant="outline" className="h-14 rounded-2xl px-8 font-bold border-slate-200 text-slate-600 bg-white">
           <Filter className="w-5 h-5 mr-3" />
-          Filter Roles
+          Filters
         </Button>
       </div>
 
@@ -79,8 +79,8 @@ export default function UserManagementPage() {
               <tr>
                 <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Explorer Profile</th>
                 <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">System Role</th>
-                <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Gamification</th>
-                <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Saved Paths</th>
+                <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Gamification Progress</th>
+                <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Mapped Routes</th>
                 <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Status</th>
                 <th className="px-10 py-6 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100">Actions</th>
               </tr>
@@ -128,28 +128,31 @@ export default function UserManagementPage() {
                       </Badge>
                     </td>
                     <td className="px-10 py-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
+                      <div className="min-w-[140px]">
+                        <div className="flex items-center justify-between gap-2 mb-2">
                           <p className="font-bold text-slate-900">Level {Math.floor((user.xp || 0) / 100) + 1}</p>
-                          <Badge variant="outline" className="text-[10px] px-2 py-0 border-amber-200 text-amber-600 font-bold">{user.xp || 0} XP</Badge>
+                          <span className="text-[10px] font-bold text-primary">{user.xp || 0} XP</span>
                         </div>
-                        <div className="w-24 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                          <div className="h-full bg-primary" style={{ width: `${(user.xp || 0) % 100}%` }} />
+                        <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                          <div 
+                            className="h-full bg-primary transition-all duration-1000" 
+                            style={{ width: `${Math.min(100, (user.xp || 0) % 100)}%` }} 
+                          />
                         </div>
                       </div>
                     </td>
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-xl bg-purple-50 text-purple-600">
-                          <MapIcon size={16} />
+                        <div className="p-2.5 rounded-xl bg-purple-50 text-purple-600">
+                          <MapIcon size={18} />
                         </div>
-                        <span className="font-bold text-slate-700">{user.savedCareers?.length || 0} Routes</span>
+                        <span className="font-bold text-slate-700">{user.savedCareers?.length || 0} Saved</span>
                       </div>
                     </td>
                     <td className="px-10 py-6">
-                      <div className={`flex items-center gap-3 font-bold text-sm ${user.status === 'suspended' ? 'text-rose-500' : 'text-emerald-500'}`}>
-                        <div className={`w-2 h-2 rounded-full ${user.status === 'suspended' ? 'bg-rose-500 animate-pulse' : 'bg-emerald-500'}`} />
-                        {user.status === 'suspended' ? 'Suspended' : 'Active'}
+                      <div className="flex items-center gap-3 font-bold text-sm text-emerald-500">
+                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                        Active
                       </div>
                     </td>
                     <td className="px-10 py-6">
