@@ -65,6 +65,25 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
     setExploredModules(prev => new Set(prev).add(id));
   };
 
+  const getPercentage = (type: 'pressure' | 'balance' | 'stability', level: string) => {
+    if (type === 'pressure') {
+      if (level === 'high') return 92;
+      if (level === 'moderate') return 54;
+      return 18;
+    }
+    if (type === 'balance') {
+      if (level === 'flexible') return 88;
+      if (level === 'structured') return 65;
+      return 22;
+    }
+    if (type === 'stability') {
+      if (level === 'stable') return 94;
+      if (level === 'growing') return 72;
+      return 38;
+    }
+    return 0;
+  };
+
   const summaryText = useMemo(() => {
     const pressureDesc = metrics.pressure === 'high' ? 'high responsibility' : metrics.pressure === 'moderate' ? 'steady focus' : 'a calm workflow';
     const balanceDesc = metrics.balance === 'flexible' ? 'excellent personal flexibility' : metrics.balance === 'structured' ? 'a predictable routine' : 'demanding peak phases';
@@ -72,7 +91,6 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
     return `This career in ${domain?.name} combines ${pressureDesc}, ${balanceDesc}, and ${stabilityDesc}.`;
   }, [metrics, domain]);
 
-  // Domain-specific color themes
   const themeColors = useMemo(() => {
     switch(domainId) {
       case 'tech': return { primary: 'text-blue-500', bg: 'from-blue-500/10 to-cyan-500/10', accent: 'bg-cyan-500' };
@@ -90,7 +108,6 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] bg-background/98 backdrop-blur-3xl flex items-center justify-center p-4 md:p-8"
     >
-      {/* Domain-specific ambient background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
         <motion.div 
           animate={{ 
@@ -113,7 +130,6 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
       </div>
 
       <div className="max-w-6xl w-full h-full max-h-[95vh] relative flex flex-col items-center overflow-hidden z-10">
-        {/* Header */}
         <div className="w-full flex justify-between items-center mb-8 px-4">
           <div className="flex items-center gap-4">
             <div className={`p-3 rounded-2xl bg-white shadow-xl ${themeColors.primary}`}>
@@ -131,54 +147,50 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
           </Button>
         </div>
 
-        {/* Dashboard Container */}
         <div className="flex-1 w-full relative flex flex-col items-center justify-center">
-          
           <div className="w-full max-w-5xl px-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full">
-              
-              {/* Module 1: Mental Pressure */}
               <Module 
                 id={0}
                 title="Mental Pressure"
                 icon={Brain}
+                percentage={getPercentage('pressure', metrics.pressure)}
                 isActive={activeModule === 0}
                 isExplored={exploredModules.has(0)}
                 onClick={() => handleModuleClick(0)}
                 visual={<PressureSphere level={metrics.pressure} domainId={domainId} />}
-                feedback="This role involves consistent decision responsibility."
+                feedback={`Stress Level: ${metrics.pressure.toUpperCase()}. Requires high emotional resilience.`}
                 themeColors={themeColors}
               />
 
-              {/* Module 2: Work-Life Balance */}
               <Module 
                 id={1}
                 title="Work-Life Balance"
                 icon={Clock}
+                percentage={getPercentage('balance', metrics.balance)}
                 isActive={activeModule === 1}
                 isExplored={exploredModules.has(1)}
                 onClick={() => handleModuleClick(1)}
                 visual={<OrbitRing level={metrics.balance} domainId={domainId} />}
-                feedback="Balance varies by role, experience, and organization."
+                feedback={`Personal Time: ${metrics.balance.toUpperCase()}. Flexibility varies by seniority.`}
                 themeColors={themeColors}
               />
 
-              {/* Module 3: Income Stability */}
               <Module 
                 id={2}
                 title="Income Stability"
                 icon={TrendingUp}
+                percentage={getPercentage('stability', metrics.stability)}
                 isActive={activeModule === 2}
                 isExplored={exploredModules.has(2)}
                 onClick={() => handleModuleClick(2)}
                 visual={<StabilityPlatform level={metrics.stability} domainId={domainId} />}
-                feedback="Financial predictability increases with experience."
+                feedback={`Financial Safety: ${metrics.stability.toUpperCase()}. Growth increases with expertise.`}
                 themeColors={themeColors}
               />
             </div>
           </div>
 
-          {/* Combined Summary Moment */}
           <AnimatePresence>
             {showSummary && (
               <motion.div
@@ -209,7 +221,6 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
           </AnimatePresence>
         </div>
 
-        {/* Interaction Hint */}
         {!showSummary && (
           <motion.div 
             initial={{ opacity: 0 }}
@@ -232,6 +243,7 @@ export function RealityExplorer({ metrics, careerName, domainId, onClose, onExpl
 function Module({ 
   id, 
   title, 
+  percentage,
   isActive, 
   isExplored, 
   onClick, 
@@ -242,6 +254,7 @@ function Module({
 }: { 
   id: number; 
   title: string; 
+  percentage: number;
   isActive: boolean; 
   isExplored: boolean; 
   onClick: () => void; 
@@ -264,8 +277,17 @@ function Module({
               : 'bg-white/30 border-white/20 backdrop-blur-xl'
         }`}
       >
-        <div className={`absolute top-8 left-8 transition-colors ${isActive ? themeColors.primary : 'text-muted-foreground/30'}`}>
+        <div className={`absolute top-8 left-8 transition-colors flex items-center gap-2 ${isActive ? themeColors.primary : 'text-muted-foreground/30'}`}>
           <Icon className="w-8 h-8" />
+          {isExplored && (
+            <motion.span 
+              initial={{ opacity: 0, x: -10 }} 
+              animate={{ opacity: 1, x: 0 }}
+              className="text-2xl font-bold font-headline"
+            >
+              {percentage}%
+            </motion.span>
+          )}
         </div>
         
         <div className="relative w-full h-full flex items-center justify-center p-12 overflow-hidden">
