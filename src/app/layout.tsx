@@ -1,3 +1,4 @@
+
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
@@ -34,10 +35,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
       </head>
-      <body className="font-body antialiased selection:bg-primary/30 relative bg-background">
+      <body className="font-body antialiased selection:bg-primary/30 relative bg-background overflow-x-hidden">
         <FirebaseClientProvider>
-          <main className="relative z-10">{children}</main>
+          <main className="relative z-10 min-h-screen">
+            {children}
+          </main>
           <Navbar />
           <Toaster />
         </FirebaseClientProvider>

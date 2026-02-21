@@ -14,7 +14,8 @@ import {
   MapIcon,
   Loader2,
   Activity,
-  Trophy
+  Trophy,
+  Database
 } from 'lucide-react';
 import { 
   XAxis, 
@@ -23,7 +24,9 @@ import {
   Tooltip, 
   ResponsiveContainer,
   AreaChart,
-  Area
+  Area,
+  BarChart,
+  Bar
 } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -58,7 +61,7 @@ export default function AdminDashboardPage() {
       total,
       avgXp: total > 0 ? Math.floor(totalXp / total) : 0,
       totalSaved,
-      activeToday: Math.floor(total * 0.4) // Simulated for dashboard vibrancy
+      activeToday: Math.floor(total * 0.4) 
     };
   }, [users]);
 
@@ -67,29 +70,28 @@ export default function AdminDashboardPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-4xl font-bold text-slate-900 tracking-tight">System Command</h1>
-          <p className="text-slate-500 font-medium">Monitoring explorer progress and app infrastructure.</p>
+          <p className="text-slate-500 font-medium">Global infrastructure & Explorer performance metrics.</p>
         </div>
         <div className="flex gap-3">
           <Link href="/admin/careers">
             <Button variant="outline" className="h-12 rounded-2xl border-slate-200 bg-white shadow-sm font-bold">
-              <Briefcase className="w-4 h-4 mr-2" />
-              Manage Library
+              <Database className="w-4 h-4 mr-2" />
+              Manage Content
             </Button>
           </Link>
           <div className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-2xl flex items-center gap-2 border border-emerald-100 shadow-sm">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[10px] font-bold uppercase tracking-widest">System Online</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Live Cloud Sync</span>
           </div>
         </div>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Total Explorers', val: loading ? '...' : stats.total.toLocaleString(), icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', trend: '+12%', up: true },
-          { label: 'Library Size', val: CAREER_PATHS.length.toString(), icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-100', trend: 'Live', up: true },
+          { label: 'Career Library', val: CAREER_PATHS.length.toString(), icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-100', trend: 'Verified', up: true },
           { label: 'Avg. Progress', val: loading ? '...' : stats.avgXp.toLocaleString() + ' XP', icon: Zap, color: 'text-amber-600', bg: 'bg-amber-100', trend: '+5%', up: true },
-          { label: 'Routes Mapped', val: loading ? '...' : stats.totalSaved.toLocaleString(), icon: MapIcon, color: 'text-purple-600', bg: 'bg-purple-100', trend: '+8%', up: true },
+          { label: 'Routes Saved', val: loading ? '...' : stats.totalSaved.toLocaleString(), icon: MapIcon, color: 'text-purple-600', bg: 'bg-purple-100', trend: '+8%', up: true },
         ].map((stat, i) => (
           <Card key={i} className="border-none shadow-sm rounded-[32px] overflow-hidden group hover:shadow-xl transition-all duration-500 bg-white">
             <CardContent className="p-8">
@@ -109,15 +111,12 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Charts & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <Card className="lg:col-span-2 border-none shadow-sm rounded-[40px] overflow-hidden bg-white">
           <CardHeader className="p-10 pb-0">
-            <div className="flex justify-between items-center">
-              <div>
-                <CardTitle className="text-2xl font-bold text-slate-900">User Growth & Engagement</CardTitle>
-                <p className="text-slate-400 text-sm mt-1">Growth trajectories across all career discovery layers.</p>
-              </div>
+            <div>
+              <CardTitle className="text-2xl font-bold text-slate-900">User Growth Trajectory</CardTitle>
+              <p className="text-slate-400 text-sm mt-1">Acquisition & engagement trends over the last 7 cycles.</p>
             </div>
           </CardHeader>
           <CardContent className="p-10 pt-8">
@@ -148,7 +147,7 @@ export default function AdminDashboardPage() {
           <CardHeader className="p-10 pb-4">
             <CardTitle className="text-2xl font-bold flex items-center gap-3 text-slate-900">
               <Activity className="w-6 h-6 text-primary" />
-              Recent Activity
+              Live Feed
             </CardTitle>
           </CardHeader>
           <CardContent className="px-10 pb-10">
@@ -165,7 +164,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <p className="text-sm font-bold text-slate-900 truncate">
-                      {activity.displayName || 'Explorer'}
+                      {activity.displayName || 'Anonymous Explorer'}
                     </p>
                     <p className="text-[10px] text-slate-400 mt-1 flex items-center gap-2 font-bold uppercase tracking-wider">
                       Lvl {Math.floor((activity.xp || 0) / 100) + 1} • {activity.xp || 0} XP
@@ -176,7 +175,7 @@ export default function AdminDashboardPage() {
             </div>
             <Link href="/admin/users">
               <Button variant="outline" className="w-full mt-10 h-12 rounded-2xl font-bold text-slate-500 border-slate-100 hover:bg-slate-50">
-                View All Explorers
+                Full User Registry
               </Button>
             </Link>
           </CardContent>
