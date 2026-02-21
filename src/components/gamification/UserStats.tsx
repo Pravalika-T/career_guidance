@@ -57,7 +57,7 @@ export function UserStats() {
   const level = Math.floor(xp / 100) + 1;
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-4 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-primary/20">
+    <div className="fixed bottom-6 right-6 z-50 flex items-center gap-4 bg-white/80 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-primary/20">
       <div className="flex flex-col items-end">
         <div className="flex items-center gap-1 text-accent font-bold">
           <Zap className="w-4 h-4 fill-current" />
