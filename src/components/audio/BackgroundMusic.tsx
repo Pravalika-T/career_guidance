@@ -9,12 +9,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 export function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Using a royalty-free ambient loop placeholder
   const audioUrl = "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3";
 
   useEffect(() => {
+    setMounted(true);
     audioRef.current = new Audio(audioUrl);
     audioRef.current.loop = true;
     audioRef.current.volume = 0.2;
@@ -37,6 +39,8 @@ export function BackgroundMusic() {
     }
     setIsPlaying(!isPlaying);
   };
+
+  if (!mounted) return null;
 
   return (
     <div className="relative">

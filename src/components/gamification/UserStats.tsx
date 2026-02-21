@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -11,12 +12,14 @@ export function UserStats() {
   const { user } = useUser();
   const db = useFirestore();
   const [localXp, setLocalXp] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef);
 
-  // Initial local XP load
+  // Initial local XP load and mount check
   useEffect(() => {
+    setMounted(true);
     const savedXp = localStorage.getItem('career_craft_xp');
     if (savedXp) setLocalXp(parseInt(savedXp));
   }, []);
@@ -47,6 +50,8 @@ export function UserStats() {
     
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [user, db, userData]);
+
+  if (!mounted) return null;
 
   const xp = user ? (userData?.xp || localXp) : localXp;
   const level = Math.floor(xp / 100) + 1;

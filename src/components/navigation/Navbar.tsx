@@ -1,9 +1,10 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Home, Compass, User, LogIn, LogOut, ShieldCheck } from 'lucide-react';
 import { BackgroundMusic } from '@/components/audio/BackgroundMusic';
 import { useUser, useAuth, useDoc, useFirestore } from '@/firebase';
@@ -16,6 +17,11 @@ export function Navbar() {
   const { user } = useUser();
   const auth = useAuth();
   const db = useFirestore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const userDocRef = user ? doc(db, 'users', user.uid) : null;
   const { data: userData } = useDoc(userDocRef);
@@ -29,7 +35,7 @@ export function Navbar() {
   const isAdmin = userData?.role === 'admin';
   const isAdminView = pathname.startsWith('/admin');
 
-  if (isAdminView) return null;
+  if (isAdminView || !mounted) return null;
 
   const navItems = [
     { href: '/', icon: Home, label: 'Home' },
